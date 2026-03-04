@@ -5,6 +5,8 @@ import { useDropzone } from 'react-dropzone'
 import { useRouter } from 'next/navigation'
 import { FilePlay, FileVideoCamera } from 'lucide-react'
 
+const API = process.env.NEXT_PUBLIC_API_URL
+
 export default function UploadBox() {
   const router = useRouter()
   const [file, setFile] = useState(null)
@@ -42,7 +44,7 @@ export default function UploadBox() {
     const formData = new FormData()
     formData.append('video', file)
 
-    const res = await fetch('http://localhost:8000/analyze', {
+    const res = await fetch('${API}/analyze', {
       method: 'POST',
       body: formData,
     })
