@@ -368,47 +368,7 @@ export default function VideoAnalyzerLanding() {
         ))}
       </section>
 
-      {/* ══ CTA BAND ══ */}
-      <section className="cta-section">
-        <div style={{
-          position: 'absolute', inset: 0,
-          background: 'radial-gradient(ellipse at 50% 50%, rgba(41,182,246,0.06) 0%, transparent 70%)',
-          pointerEvents: 'none',
-        }} />
-
-        <p style={{
-          fontFamily: "'DM Mono', monospace", fontSize: 11,
-          color: '#29B6F6', letterSpacing: '0.3em',
-          textTransform: 'uppercase', marginBottom: 20,
-        }}>Ready?</p>
-
-        <h2 style={{
-          fontFamily: "'Bebas Neue', sans-serif",
-          fontSize: 'clamp(40px, 8vw, 96px)',
-          color: 'white', letterSpacing: '0.04em',
-          lineHeight: 0.95, marginBottom: 32,
-        }}>
-          UPLOAD YOUR<br />
-          <span style={{
-            background: 'linear-gradient(90deg, #29B6F6, #0D47A1)',
-            WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent',
-          }}>FOOTAGE NOW</span>
-        </h2>
-
-        <p style={{
-          fontSize: 15, color: 'rgba(255,255,255,0.4)',
-          marginBottom: 40, fontWeight: 300,
-        }}>Free. No account needed. Results in seconds.</p>
-
-        <Link href="/video-analyzer/upload" className="cta-btn" style={{
-          background: 'linear-gradient(135deg, #29B6F6, #0288D1)',
-          color: 'white', padding: '16px 48px', borderRadius: 12,
-          fontWeight: 700, fontSize: 15, letterSpacing: '0.06em',
-          textDecoration: 'none', display: 'inline-block',
-        }}>
-          Analyze My Video →
-        </Link>
-      </section>
+    
 
       <Footer />
     </div>
