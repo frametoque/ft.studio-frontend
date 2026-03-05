@@ -13,7 +13,7 @@ export default function Navbar() {
           <Image src="/name-logo-trans.png" alt="Frametoque AI Logo" width={175} height={40} className="inline-block" />
         </span>
         <span className="bg-[#2563EB] text-white text-xs font-bold px-2 py-1 rounded">
-          AI
+          STUDIO
         </span>
       </Link>
 

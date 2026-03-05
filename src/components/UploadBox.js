@@ -44,7 +44,7 @@ export default function UploadBox() {
     const formData = new FormData()
     formData.append('video', file)
 
-    const res = await fetch(`${API}/analyze`, {
+    const res = await fetch(`${API}analyze`, {
       method: 'POST',
       body: formData,
     })
