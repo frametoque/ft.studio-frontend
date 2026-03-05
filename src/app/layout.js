@@ -1,29 +1,38 @@
-import { Bricolage_Grotesque, DM_Mono } from "next/font/google";
-import './globals.css'
-import KeepAlive from '@/components/KeepAlive'
-
-const bricolage = Bricolage_Grotesque({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700", "800"],
-});
-
-const dmMono = DM_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
-  weight: ["300", "400", "500"],
-});
+import '@/app/globals.css'
+import KeepAlive from '@/app/components/KeepAlive'
 
 export const metadata = {
-  title: 'Frametoque AI — Shot Quality Analyzer',
-  description: 'AI-powered video composition and shot quality analyzer for videographers',
+  title: {
+    default: 'FrameToque Studio',
+    template: '%s | FrameToque Studio',
+  },
+  description: 'A growing suite of AI tools built for filmmakers, videographers, and content creators.',
+  metadataBase: new URL('https://studio.frametoque.online'),
+  openGraph: {
+    title: 'FrameToque Studio',
+    description: 'Professional filmmaking tools powered by AI.',
+    url: 'https://studio.frametoque.online',
+    siteName: 'FrameToque Studio',
+    locale: 'en_US',
+    type: 'website',
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'FrameToque Studio',
+    description: 'Professional filmmaking tools powered by AI.',
+  },
 }
-
 
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body suppressHydrationWarning className={`${bricolage.variable} ${dmMono.variable} bg-[#050810]`}>
+      <head>
+        <link
+          href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=Bebas+Neue&family=DM+Mono:wght@400;500&display=swap"
+          rel="stylesheet"
+        />
+      </head>
+      <body>
         <KeepAlive />
         {children}
       </body>
