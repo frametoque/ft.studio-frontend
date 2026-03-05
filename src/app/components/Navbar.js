@@ -105,8 +105,9 @@ export default function Navbar() {
 
         {/* Desktop links */}
         <div className="nav-desktop-links">
-          <Link className="nav-link" href="#how">How it works</Link>
-          <Link className="nav-link" href="#checks">What we check</Link>
+        <Link className="nav-link" href="https://frametoque.online/services" target="_blank">Services</Link>
+        <Link className="nav-link" href="https://frametoque.online/about" target="_blank" >About</Link>
+        <Link className="nav-link" href="https://frametoque.online/contact" target="_blank">Contact</Link>
           <Link href="https://frametoque.online" target="_blank" style={{
             background: 'linear-gradient(135deg, #29B6F6, #0288D1)',
             color: 'white', padding: '8px 20px', borderRadius: 8,
@@ -127,8 +128,9 @@ export default function Navbar() {
 
       {/* Mobile menu */}
       <div className={`mobile-menu ${menuOpen ? 'open' : ''}`}>
-        <Link className="nav-link" href="#how" onClick={() => setMenuOpen(false)}>How it works</Link>
-        <Link className="nav-link" href="#checks" onClick={() => setMenuOpen(false)}>What we check</Link>
+        <Link className="nav-link" href="https://frametoque.online/services" target="_blank" onClick={() => setMenuOpen(false)}>Services</Link>
+        <Link className="nav-link" href="https://frametoque.online/about" target="_blank" onClick={() => setMenuOpen(false)}>About</Link>
+        <Link className="nav-link" href="https://frametoque.online/contact" target="_blank" onClick={() => setMenuOpen(false)}>Contact</Link>
         <Link
           href="https://frametoque.online"
           target="_blank"
