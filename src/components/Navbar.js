@@ -1,6 +1,8 @@
 import Link from 'next/link'
 import Image from 'next/image'
 
+
+
 export default function Navbar() {
   return (
     <nav className="w-full px-8 py-4 flex items-center justify-between border-b border-[#1E3060] bg-[#050810]">

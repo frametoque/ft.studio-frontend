@@ -1,5 +1,6 @@
 import { Bricolage_Grotesque, DM_Mono } from "next/font/google";
 import './globals.css'
+import KeepAlive from '@/components/KeepAlive'
 
 const bricolage = Bricolage_Grotesque({
   variable: "--font-geist-sans",
@@ -23,6 +24,7 @@ export default function RootLayout({ children }) {
   return (
     <html lang="en">
       <body suppressHydrationWarning className={`${bricolage.variable} ${dmMono.variable} bg-[#050810]`}>
+        <KeepAlive />
         {children}
       </body>
     </html>
