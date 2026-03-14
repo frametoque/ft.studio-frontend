@@ -7,63 +7,78 @@ import Image from 'next/image'
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState<boolean>(false)
 
+  const navLinks = [
+    { href: 'https://frametoque.online/services', label: 'Services' },
+    { href: 'https://frametoque.online/about', label: 'About' },
+    { href: 'https://frametoque.online/contact', label: 'Contact' },
+  ]
+
   return (
     <>
-    
-      <nav style={{
-        position: 'fixed', top: 0, left: 0, right: 0, zIndex: 100,
-        padding: '0 24px', height: 64,
-        display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-        borderBottom: '1px solid rgba(255,255,255,0.05)',
-        background: 'rgba(6,11,24,0.85)', backdropFilter: 'blur(20px)',
-      }}>
+      <nav className="fixed top-0 left-0 right-0 z-[100] h-16 px-6 flex items-center justify-between border-b border-white/5 bg-[#060B18]/85 backdrop-blur-xl">
+        
         {/* Logo */}
-        <Link href="/" style={{ display: 'flex', alignItems: 'center', gap: 10, textDecoration: 'none' }}>
+        <Link href="/" className="flex items-center gap-2 no-underline group">
           <Image src="/name-logo-trans.png" alt="Frametoque" width={160} height={32} />
-          <span style={{
-            fontFamily: "'DM Mono', monospace", fontSize: 10,
-            color: '#29B6F6', letterSpacing: '0.2em',
-            background: 'rgba(41,182,246,0.1)',
-            border: '1px solid rgba(41,182,246,0.2)',
-            padding: '2px 7px', borderRadius: 4, marginLeft: 4,
-            whiteSpace: 'nowrap',
-          }}>STUDIO</span>
+          <span className="font-mono text-[10px] text-[#29B6F6] tracking-[0.2em] bg-[#29B6F6]/10 border border-[#29B6F6]/20 px-[7px] py-[2px] rounded ml-1 whitespace-nowrap">
+            STUDIO
+          </span>
         </Link>
 
         {/* Desktop links */}
-        <div className="nav-desktop-links">
-        <Link className="nav-link" href="https://frametoque.online/services" target="_blank">Services</Link>
-        <Link className="nav-link" href="https://frametoque.online/about" target="_blank" >About</Link>
-        <Link className="nav-link" href="https://frametoque.online/contact" target="_blank">Contact</Link>
-          <Link href="https://frametoque.online" target="_blank" style={{
-            background: 'linear-gradient(135deg, #29B6F6, #0288D1)',
-            color: 'white', padding: '8px 20px', borderRadius: 8,
-            fontWeight: 600, fontSize: 13, letterSpacing: '0.04em',
-            textDecoration: 'none',
-          }}>Visit Our Main Site</Link>
+        <div className="hidden md:flex items-center gap-8">
+          {navLinks.map((link) => (
+            <Link
+              key={link.href}
+              href={link.href}
+              target="_blank"
+              className="text-[13px] text-white/50 tracking-widest uppercase hover:text-white transition-colors duration-200"
+            >
+              {link.label}
+            </Link>
+          ))}
+          <Link
+            href="https://frametoque.online"
+            target="_blank"
+            className="bg-gradient-to-r from-[#29B6F6] to-[#0288D1] text-white px-5 py-2 rounded-lg font-semibold text-[13px] tracking-[0.04em] hover:-translate-y-0.5 hover:shadow-lg hover:shadow-[#29B6F6]/30 transition-all duration-200"
+          >
+            Visit Our Main Site
+          </Link>
         </div>
 
         {/* Hamburger */}
         <button
-          className={`hamburger ${menuOpen ? 'open' : ''}`}
           onClick={() => setMenuOpen(!menuOpen)}
           aria-label="Toggle menu"
+          className="md:hidden flex flex-col justify-center gap-[5px] p-1 bg-transparent border-none cursor-pointer"
         >
-          <span /><span /><span />
+          <span className={`block w-[22px] h-[2px] bg-white/70 rounded-sm transition-all duration-250 ${menuOpen ? 'translate-y-[7px] rotate-45' : ''}`} />
+          <span className={`block w-[22px] h-[2px] bg-white/70 rounded-sm transition-all duration-250 ${menuOpen ? 'opacity-0' : ''}`} />
+          <span className={`block w-[22px] h-[2px] bg-white/70 rounded-sm transition-all duration-250 ${menuOpen ? '-translate-y-[7px] -rotate-45' : ''}`} />
         </button>
       </nav>
 
       {/* Mobile menu */}
-      <div className={`mobile-menu ${menuOpen ? 'open' : ''}`}>
-        <Link className="nav-link" href="https://frametoque.online/services" target="_blank" onClick={() => setMenuOpen(false)}>Services</Link>
-        <Link className="nav-link" href="https://frametoque.online/about" target="_blank" onClick={() => setMenuOpen(false)}>About</Link>
-        <Link className="nav-link" href="https://frametoque.online/contact" target="_blank" onClick={() => setMenuOpen(false)}>Contact</Link>
+      <div className={`md:hidden fixed top-16 left-0 right-0 z-[99] bg-[#060B18]/97 backdrop-blur-xl border-b border-white/5 flex flex-col px-6 gap-1 transition-all duration-300 overflow-hidden ${menuOpen ? 'py-5 pb-7 opacity-100 pointer-events-auto' : 'max-h-0 py-0 opacity-0 pointer-events-none'}`}>
+        {navLinks.map((link) => (
+          <Link
+            key={link.href}
+            href={link.href}
+            target="_blank"
+            onClick={() => setMenuOpen(false)}
+            className="text-[15px] text-white/50 hover:text-white py-2.5 border-b border-white/5 tracking-widest uppercase transition-colors duration-200"
+          >
+            {link.label}
+          </Link>
+        ))}
         <Link
           href="https://frametoque.online"
           target="_blank"
-          className="mobile-cta"
           onClick={() => setMenuOpen(false)}
-        >Visit Our Main Site</Link>
+          className="mt-2 block text-center bg-gradient-to-r from-[#29B6F6] to-[#0288D1] text-white px-5 py-3 rounded-lg font-semibold text-[14px] tracking-[0.04em] hover:opacity-90 transition-opacity duration-200"
+        >
+          Visit Our Main Site
+        </Link>
       </div>
     </>
   )

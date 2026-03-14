@@ -25,9 +25,8 @@ export const metadata: Metadata = {
   },
 }
 
-// Optional: Add viewport configuration if needed
 export const viewport: Viewport = {
-  themeColor: '#000000', // You can adjust this color as needed
+  themeColor: '#060B18',
   width: 'device-width',
   initialScale: 1,
 }
@@ -39,13 +38,11 @@ interface RootLayoutProps {
 export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang="en">
-      <head>
-        <link
-          href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=Bebas+Neue&family=DM+Mono:wght@400;500&display=swap"
-          rel="stylesheet"
-        />
-      </head>
       <body>
+        <div className="bg-grid" />
+        <div className="bg-scanline-wrap">
+          <div className="bg-scanline" />
+        </div>
         <KeepAlive />
         {children}
       </body>

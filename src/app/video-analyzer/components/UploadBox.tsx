@@ -10,12 +10,8 @@ const API = process.env.NEXT_PUBLIC_API_URL
 interface AnalysisResult {
   filename: string
   overall_score: number
-  style?: {
-    detected: string
-  }
-  engagement?: {
-    level: string
-  }
+  style?: { detected: string }
+  engagement?: { level: string }
   checks: Record<string, unknown>
 }
 
@@ -30,17 +26,17 @@ interface HistoryItem {
 
 export default function UploadBox() {
   const router = useRouter()
-  const [file, setFile] = useState<File | null>(null)
-  const [uploading, setUploading] = useState<boolean>(false)
-  const [error, setError] = useState<string | null>(null)
+  const [file, setFile]         = useState<File | null>(null)
+  const [uploading, setUploading] = useState(false)
+  const [error, setError]       = useState<string | null>(null)
 
-  const onDrop = useCallback((acceptedFiles: File[], rejectedFiles: FileRejection[]) => {
+  const onDrop = useCallback((accepted: File[], rejected: FileRejection[]) => {
     setError(null)
-    if (rejectedFiles.length > 0) {
+    if (rejected.length > 0) {
       setError('Invalid file. Please upload an MP4, MOV or AVI under 100MB.')
       return
     }
-    setFile(acceptedFiles[0])
+    setFile(accepted[0])
   }, [])
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
@@ -58,22 +54,13 @@ export default function UploadBox() {
     if (!file) return
     setUploading(true)
     setError(null)
-
     try {
       const formData = new FormData()
       formData.append('video', file)
-
-      const res = await fetch(`${API}analyze`, {
-        method: 'POST',
-        body: formData,
-      })
-
+      const res = await fetch(`${API}analyze`, { method: 'POST', body: formData })
       if (!res.ok) throw new Error('Analysis failed')
-
       const data: AnalysisResult = await res.json()
-
       localStorage.setItem('frametoque_results', JSON.stringify(data))
-
       const history: HistoryItem[] = JSON.parse(localStorage.getItem('frametoque_history') || '[]')
       history.push({
         filename:         data.filename,
@@ -85,204 +72,96 @@ export default function UploadBox() {
       })
       if (history.length > 50) history.shift()
       localStorage.setItem('frametoque_history', JSON.stringify(history))
-
       router.push('/video-analyzer/results')
-
-    } catch (err) {
+    } catch {
       setError('Could not connect to the AI backend. Make sure it is running.')
     } finally {
       setUploading(false)
     }
   }
 
-  const formatSize = (bytes: number): string => (bytes / (1024 * 1024)).toFixed(1) + ' MB'
+  const formatSize = (bytes: number) => (bytes / (1024 * 1024)).toFixed(1) + ' MB'
 
   return (
-    <div style={{ width: '100%' }}>
+    <div className="w-full">
 
-      <style>{`
-        .dropzone {
-          border: 1.5px dashed rgba(30,48,96,0.8);
-          border-radius: 16px;
-          padding: 52px 32px;
-          text-align: center;
-          cursor: pointer;
-          background: rgba(10,15,30,0.6);
-          transition: border-color 0.25s ease, background 0.25s ease;
-          position: relative;
-          overflow: hidden;
-        }
-        .dropzone:hover {
-          border-color: rgba(41,182,246,0.4);
-          background: rgba(41,182,246,0.03);
-        }
-        .dropzone.active {
-          border-color: #29B6F6;
-          background: rgba(41,182,246,0.06);
-        }
-        .dropzone::before {
-          content: '';
-          position: absolute;
-          inset: 0;
-          background: radial-gradient(ellipse at 50% 0%, rgba(41,182,246,0.05) 0%, transparent 70%);
-          pointer-events: none;
-        }
-        .analyze-btn {
-          width: 100%;
-          padding: 15px;
-          border-radius: 12px;
-          border: none;
-          font-family: 'DM Sans', sans-serif;
-          font-size: 15px;
-          font-weight: 600;
-          letter-spacing: 0.04em;
-          cursor: pointer;
-          transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
-          display: flex; align-items: center; justify-content: center; gap: 10px;
-        }
-        .analyze-btn.ready {
-          background: linear-gradient(135deg, #29B6F6, #0288D1);
-          color: white;
-        }
-        .analyze-btn.ready:hover {
-          transform: translateY(-2px);
-          box-shadow: 0 8px 32px rgba(41,182,246,0.35);
-        }
-        .analyze-btn.disabled {
-          background: rgba(13,21,38,0.8);
-          color: rgba(255,255,255,0.2);
-          border: 1px solid rgba(30,48,96,0.5);
-          cursor: not-allowed;
-        }
-        .remove-btn {
-          background: none; border: none;
-          color: rgba(255,255,255,0.25);
-          font-size: 12px; cursor: pointer;
-          font-family: 'DM Mono', monospace;
-          letter-spacing: 0.1em;
-          transition: color 0.2s;
-          padding: 4px 8px;
-        }
-        .remove-btn:hover { color: #ef4444; }
-
-        @keyframes spin {
-          from { transform: rotate(0deg); }
-          to   { transform: rotate(360deg); }
-        }
-        .spinner {
-          width: 18px; height: 18px;
-          border: 2px solid rgba(255,255,255,0.2);
-          border-top-color: white;
-          border-radius: 50%;
-          animation: spin 0.7s linear infinite;
-          flex-shrink: 0;
-        }
-      `}</style>
-
-      {/* Drop zone */}
+      {/* Dropzone */}
       <div
         {...getRootProps()}
-        className={`dropzone${isDragActive ? ' active' : ''}`}
+        className={`relative overflow-hidden rounded-2xl px-8 py-14 text-center cursor-pointer border-[1.5px] border-dashed transition-all duration-250
+          ${isDragActive
+            ? 'border-[#29B6F6] bg-[#29B6F6]/[0.06]'
+            : 'border-[#1E3060]/80 bg-[#0A0F1E]/60 hover:border-[#29B6F6]/40 hover:bg-[#29B6F6]/[0.03]'
+          }`}
       >
         <input {...getInputProps()} />
 
+        {/* Top radial glow */}
+        <div
+          className="absolute inset-0 pointer-events-none"
+          style={{ background: 'radial-gradient(ellipse at 50% 0%, rgba(41,182,246,0.05) 0%, transparent 70%)' }}
+        />
+
         {/* Icon */}
-        <div style={{
-          width: 64, height: 64, borderRadius: 14,
-          background: isDragActive ? 'rgba(41,182,246,0.15)' : 'rgba(41,182,246,0.08)',
-          border: `1px solid ${isDragActive ? 'rgba(41,182,246,0.4)' : 'rgba(41,182,246,0.15)'}`,
-          display: 'flex', alignItems: 'center', justifyContent: 'center',
-          margin: '0 auto 20px',
-          transition: 'all 0.25s ease',
-        }}>
+        <div className={`w-16 h-16 rounded-[14px] flex items-center justify-center mx-auto mb-5 transition-all duration-250
+          ${isDragActive
+            ? 'bg-[#29B6F6]/15 border border-[#29B6F6]/40'
+            : 'bg-[#29B6F6]/[0.08] border border-[#29B6F6]/15'
+          }`}
+        >
           <FileVideo size={28} color="#29B6F6" strokeWidth={1.5} />
         </div>
 
         {isDragActive ? (
           <>
-            <p style={{
-              fontFamily: "'Bebas Neue', sans-serif",
-              fontSize: 24, letterSpacing: '0.08em', color: '#29B6F6',
-            }}>DROP IT HERE</p>
-            <p style={{
-              fontSize: 13, color: 'rgba(41,182,246,0.6)',
-              marginTop: 6, fontWeight: 300,
-            }}>Release to upload your footage</p>
+            <p className="font-display text-[24px] tracking-[0.08em] text-[#29B6F6]">
+              DROP IT HERE
+            </p>
+            <p className="text-[13px] text-[#29B6F6]/60 mt-1.5 font-light">
+              Release to upload your footage
+            </p>
           </>
         ) : (
           <>
-            <p style={{
-              fontFamily: "'Bebas Neue', sans-serif",
-              fontSize: 22, letterSpacing: '0.08em',
-              color: 'white', marginBottom: 8,
-            }}>DRAG & DROP YOUR VIDEO</p>
-            <p style={{
-              fontSize: 13, color: 'rgba(255,255,255,0.35)',
-              marginBottom: 20, fontWeight: 300,
-            }}>or click to browse your files</p>
-            <div style={{
-              display: 'inline-flex', alignItems: 'center', gap: 8,
-              padding: '6px 16px', borderRadius: 20,
-              border: '1px solid rgba(30,48,96,0.8)',
-              background: 'rgba(13,21,38,0.6)',
-            }}>
+            <p className="font-display text-[22px] tracking-[0.08em] text-white mb-2">
+              DRAG & DROP YOUR VIDEO
+            </p>
+            <p className="text-[13px] text-white/35 mb-5 font-light">
+              or click to browse your files
+            </p>
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-[#1E3060]/80 bg-[#0D1526]/60">
               {['MP4', 'MOV', 'AVI'].map((fmt, i) => (
-                <span key={fmt} style={{ display: 'flex', alignItems: 'center', gap: 8 }}>
-                  <span style={{
-                    fontFamily: "'DM Mono', monospace",
-                    fontSize: 11, color: 'rgba(255,255,255,0.35)',
-                    letterSpacing: '0.1em',
-                  }}>{fmt}</span>
-                  {i < 2 && <span style={{ color: 'rgba(255,255,255,0.1)', fontSize: 10 }}>·</span>}
+                <span key={fmt} className="flex items-center gap-2">
+                  <span className="font-mono text-[11px] text-white/35 tracking-[0.1em]">{fmt}</span>
+                  {i < 2 && <span className="text-white/10 text-[10px]">·</span>}
                 </span>
               ))}
-              <span style={{ color: 'rgba(255,255,255,0.1)', fontSize: 10 }}>·</span>
-              <span style={{
-                fontFamily: "'DM Mono', monospace",
-                fontSize: 11, color: 'rgba(255,255,255,0.35)',
-                letterSpacing: '0.1em',
-              }}>Max 100MB</span>
+              <span className="text-white/10 text-[10px]">·</span>
+              <span className="font-mono text-[11px] text-white/35 tracking-[0.1em]">Max 100MB</span>
             </div>
           </>
         )}
       </div>
 
-      {/* Selected file info */}
+      {/* Selected file */}
       {file && (
-        <div style={{
-          marginTop: 12,
-          background: 'rgba(13,21,38,0.8)',
-          border: '1px solid rgba(41,182,246,0.2)',
-          borderRadius: 12,
-          padding: '14px 18px',
-          display: 'flex', alignItems: 'center', justifyContent: 'space-between',
-        }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
-            <div style={{
-              width: 36, height: 36, borderRadius: 8,
-              background: 'rgba(41,182,246,0.1)',
-              border: '1px solid rgba(41,182,246,0.2)',
-              display: 'flex', alignItems: 'center', justifyContent: 'center',
-              flexShrink: 0,
-            }}>
+        <div className="mt-3 bg-[#0D1526]/80 border border-[#29B6F6]/20 rounded-xl px-[18px] py-3.5 flex items-center justify-between">
+          <div className="flex items-center gap-3">
+            <div className="w-9 h-9 rounded-lg bg-[#29B6F6]/10 border border-[#29B6F6]/20 flex items-center justify-center flex-shrink-0">
               <FileVideo2 size={16} color="#29B6F6" strokeWidth={1.5} />
             </div>
             <div>
-              <p style={{
-                fontSize: 13, color: 'white', fontWeight: 500,
-                marginBottom: 2, maxWidth: 320,
-                overflow: 'hidden', textOverflow: 'ellipsis', whiteSpace: 'nowrap',
-              }}>{file.name}</p>
-              <p style={{
-                fontFamily: "'DM Mono', monospace",
-                fontSize: 11, color: 'rgba(255,255,255,0.3)',
-                letterSpacing: '0.05em',
-              }}>{formatSize(file.size)}</p>
+              <p className="text-[13px] text-white font-medium mb-0.5 max-w-[320px] truncate">
+                {file.name}
+              </p>
+              <p className="font-mono text-[11px] text-white/30 tracking-[0.05em]">
+                {formatSize(file.size)}
+              </p>
             </div>
           </div>
           <button
-            className="remove-btn"
-            onClick={(e: React.MouseEvent<HTMLButtonElement>) => { e.stopPropagation(); setFile(null) }}
+            onClick={(e) => { e.stopPropagation(); setFile(null) }}
+            className="font-mono text-[12px] text-white/25 tracking-[0.1em] px-2 py-1 bg-transparent border-none cursor-pointer hover:text-red-400 transition-colors duration-200"
           >
             ✕ REMOVE
           </button>
@@ -291,17 +170,8 @@ export default function UploadBox() {
 
       {/* Error */}
       {error && (
-        <div style={{
-          marginTop: 12,
-          background: 'rgba(239,68,68,0.06)',
-          border: '1px solid rgba(239,68,68,0.25)',
-          borderRadius: 12, padding: '12px 16px',
-        }}>
-          <p style={{
-            fontSize: 13, color: '#f87171',
-            fontFamily: "'DM Mono', monospace",
-            letterSpacing: '0.02em',
-          }}>⚠ {error}</p>
+        <div className="mt-3 bg-red-500/[0.06] border border-red-500/25 rounded-xl px-4 py-3">
+          <p className="font-mono text-[13px] text-red-400 tracking-[0.02em]">⚠ {error}</p>
         </div>
       )}
 
@@ -309,12 +179,15 @@ export default function UploadBox() {
       <button
         onClick={handleAnalyze}
         disabled={!file || uploading}
-        className={`analyze-btn ${file && !uploading ? 'ready' : 'disabled'}`}
-        style={{ marginTop: 16 }}
+        className={`mt-4 w-full py-[15px] rounded-xl font-semibold text-[15px] tracking-[0.04em] flex items-center justify-center gap-2.5 transition-all duration-200
+          ${file && !uploading
+            ? 'bg-gradient-to-r from-[#29B6F6] to-[#0288D1] text-white cursor-pointer hover:-translate-y-0.5 hover:shadow-xl hover:shadow-[#29B6F6]/35'
+            : 'bg-[#0D1526]/80 text-white/20 border border-[#1E3060]/50 cursor-not-allowed'
+          }`}
       >
         {uploading ? (
           <>
-            <div className="spinner" />
+            <div className="w-[18px] h-[18px] rounded-full border-2 border-white/20 border-t-white animate-spin flex-shrink-0" />
             Analyzing your footage...
           </>
         ) : (
@@ -323,12 +196,7 @@ export default function UploadBox() {
       </button>
 
       {/* Time note */}
-      <p style={{
-        textAlign: 'center', marginTop: 12,
-        fontFamily: "'DM Mono', monospace",
-        fontSize: 11, color: 'rgba(255,255,255,0.18)',
-        letterSpacing: '0.1em',
-      }}>
+      <p className="text-center mt-3 font-mono text-[11px] text-white/18 tracking-[0.1em]">
         ANALYSIS TAKES 10–30 SECONDS
       </p>
 

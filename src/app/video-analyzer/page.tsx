@@ -6,7 +6,6 @@ import NavBar from '@/components/Navbar'
 import Footer from '@/components/Footer'
 import UploadBox from '@/app/video-analyzer/components/UploadBox'
 import Link from 'next/link'
-import './hero.css'
 
 interface Check {
   icon: LucideIcon
@@ -25,7 +24,12 @@ interface Model {
   task: string
   desc: string
   styles: string[]
-  color: string
+  colorClass: string
+  borderClass: string
+  bgClass: string
+  textClass: string
+  tagBgClass: string
+  tagBorderClass: string
 }
 
 const checks: Check[] = [
@@ -51,25 +55,44 @@ const models: Model[] = [
     task: 'Style Detection',
     desc: 'Detects shooting style from motion, color temperature, and frame composition patterns.',
     styles: ['Interview', 'Documentary', 'Travel', 'Cinematic', 'Action', 'Lifestyle'],
-    color: '#29B6F6',
+    colorClass: 'text-[#29B6F6]',
+    borderClass: 'border-[#1E3060]/50',
+    bgClass: 'bg-[#0D1526]/70',
+    textClass: 'text-[#29B6F6]',
+    tagBgClass: 'bg-[#29B6F6]/[0.07]',
+    tagBorderClass: 'border-[#29B6F6]/[0.15]',
   },
   {
     model: 'Random Forest',
     task: 'Quality Scoring',
     desc: 'Predicts overall quality 0–100 from 5 cinematography features weighted by industry standards.',
     styles: ['Exposure 25%', 'Composition 25%', 'Contrast 20%', 'Sharpness 15%', 'Stability 15%'],
-    color: '#AB47BC',
+    colorClass: 'text-[#AB47BC]',
+    borderClass: 'border-[#1E3060]/50',
+    bgClass: 'bg-[#0D1526]/70',
+    textClass: 'text-[#AB47BC]',
+    tagBgClass: 'bg-[#AB47BC]/[0.07]',
+    tagBorderClass: 'border-[#AB47BC]/[0.15]',
   },
   {
     model: 'Gradient Boosting',
     task: 'Engagement Prediction',
     desc: 'Predicts viewer engagement level from quality score, style, and shooting characteristics.',
     styles: ['High 🔥', 'Medium 📈', 'Low ⚠️'],
-    color: '#66BB6A',
+    colorClass: 'text-[#66BB6A]',
+    borderClass: 'border-[#1E3060]/50',
+    bgClass: 'bg-[#0D1526]/70',
+    textClass: 'text-[#66BB6A]',
+    tagBgClass: 'bg-[#66BB6A]/[0.07]',
+    tagBorderClass: 'border-[#66BB6A]/[0.15]',
   },
 ]
 
-const grain = `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E")`
+const stats: [string, string][] = [
+  ['7', 'Quality Checks'],
+  ['3', 'ML Models'],
+  ['<5s', 'Analysis Time'],
+]
 
 export default function VideoAnalyzerLanding() {
   const [mounted, setMounted] = useState<boolean>(false)
@@ -82,11 +105,11 @@ export default function VideoAnalyzerLanding() {
     setMounted(true)
     const handleMouse = (e: MouseEvent) => setMousePos({ x: e.clientX, y: e.clientY })
     const checkMobile = () => setIsMobile(window.innerWidth < 768)
-    
+
     window.addEventListener('mousemove', handleMouse)
     window.addEventListener('resize', checkMobile)
     checkMobile()
-    
+
     return () => {
       window.removeEventListener('mousemove', handleMouse)
       window.removeEventListener('resize', checkMobile)
@@ -94,293 +117,209 @@ export default function VideoAnalyzerLanding() {
   }, [])
 
   return (
-    <div style={{
-      minHeight: '100vh',
-      background: '#060B18',
-      fontFamily: "'DM Sans', sans-serif",
-      overflowX: 'hidden',
-      position: 'relative',
-    }}>
+    <div className="min-h-screen bg-[#060B18] overflow-x-hidden relative">
 
       {/* Cursor glow — desktop only */}
       {mounted && !isMobile && (
-        <div style={{
-          position: 'fixed',
-          left: mousePos.x - 350, top: mousePos.y - 350,
-          width: 700, height: 700, borderRadius: '50%',
-          background: 'radial-gradient(circle, rgba(41,182,246,0.07) 0%, transparent 70%)',
-          pointerEvents: 'none', zIndex: 0,
-        }} />
+        <div
+          className="fixed w-[700px] h-[700px] rounded-full pointer-events-none z-0"
+          style={{
+            left: mousePos.x - 350,
+            top: mousePos.y - 350,
+            background: 'radial-gradient(circle, rgba(41,182,246,0.07) 0%, transparent 70%)',
+          }}
+        />
       )}
 
       {/* Scanline */}
-      <div style={{
-        position: 'fixed', inset: 0, pointerEvents: 'none', zIndex: 1,
-        overflow: 'hidden', opacity: 0.025,
-      }}>
-        <div style={{
-          position: 'absolute', left: 0, right: 0, height: 2,
-          background: 'linear-gradient(transparent, #29B6F6, transparent)',
-          animation: 'scanline 10s linear infinite',
-        }} />
+      <div className="fixed inset-0 pointer-events-none z-[1] overflow-hidden opacity-[0.025]">
+        <div className="bg-scanline absolute left-0 right-0 h-[2px]"
+          style={{ background: 'linear-gradient(transparent, #29B6F6, transparent)' }}
+        />
       </div>
 
       {/* Grid */}
-      <div style={{
-        position: 'fixed', inset: 0, zIndex: 0,
-        backgroundImage: `
-          linear-gradient(rgba(41,182,246,0.035) 1px, transparent 1px),
-          linear-gradient(90deg, rgba(41,182,246,0.035) 1px, transparent 1px)
-        `,
-        backgroundSize: '60px 60px',
-      }} />
-
-      {/* Grain */}
-      <div style={{
-        position: 'fixed', inset: 0, zIndex: 0,
-        backgroundImage: grain, backgroundRepeat: 'repeat', pointerEvents: 'none',
-      }} />
+      <div className="bg-grid fixed inset-0 z-0" />
 
       <NavBar />
 
       {/* ══ HERO ══ */}
-      <section className="hero-section">
+      <section className="relative z-[2] max-w-[1400px] mx-auto px-12 md:px-6 sm:px-5 grid grid-cols-1 lg:grid-cols-2 min-h-[calc(100vh-64px)] items-center gap-12 lg:gap-8">
 
         {/* Left — copy */}
-        <div>
-          <div style={{
-            fontFamily: "'DM Mono', monospace", fontSize: 11,
-            letterSpacing: '0.3em', color: '#29B6F6',
-            textTransform: 'uppercase', marginBottom: 24,
-            display: 'flex', alignItems: 'center', gap: 10,
-            opacity: mounted ? 1 : 0,
-            animation: mounted ? 'fadeUp 0.6s ease 0.1s both' : 'none',
-          }}>
-            <span style={{
-              width: 6, height: 6, borderRadius: '50%',
-              background: '#29B6F6', display: 'inline-block',
-              animation: 'pulse 2s ease-in-out infinite',
-            }} />
+        <div className="py-20 lg:pr-16 lg:sticky lg:top-16">
+
+          {/* Live label */}
+          <div className={`font-mono text-[11px] text-[#29B6F6] tracking-[0.3em] uppercase mb-6 flex items-center gap-2.5 transition-opacity duration-700 ${mounted ? 'opacity-100' : 'opacity-0'} fade-1`}>
+            <span className="w-[6px] h-[6px] rounded-full bg-[#29B6F6] inline-block flex-shrink-0 animate-pulse" />
             AI Cinematography Feedback
           </div>
 
-          <h1 style={{
-            fontFamily: "'Bebas Neue', sans-serif",
-            fontSize: 'clamp(44px, 7vw, 90px)',
-            lineHeight: 0.92, letterSpacing: '0.04em',
-            color: 'white', marginBottom: 6,
-            opacity: mounted ? 1 : 0,
-            animation: mounted ? 'fadeUp 0.6s ease 0.2s both' : 'none',
-          }}>KNOW EXACTLY</h1>
+          {/* Title */}
+          <h1 className={`font-display text-[clamp(44px,7vw,90px)] leading-[0.92] tracking-[0.04em] text-white mb-1.5 ${mounted ? 'fade-2' : 'opacity-0'}`}>
+            KNOW EXACTLY
+          </h1>
+          <h1
+            className={`font-display text-[clamp(44px,7vw,90px)] leading-[0.92] tracking-[0.04em] mb-1.5 ${mounted ? 'fade-3' : 'opacity-0'}`}
+            style={{
+              background: 'linear-gradient(90deg, #29B6F6 0%, #0D47A1 40%, #29B6F6 60%, #0D47A1 100%)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+              backgroundSize: '200% auto',
+              animation: mounted ? 'shimmer 5s linear 1s infinite' : 'none',
+            }}
+          >
+            WHAT&apos;S WRONG
+          </h1>
+          <h1 className={`font-display text-[clamp(44px,7vw,90px)] leading-[0.92] tracking-[0.04em] text-white mb-7 ${mounted ? 'fade-4' : 'opacity-0'}`}>
+            WITH YOUR SHOT
+          </h1>
 
-          <h1 style={{
-            fontFamily: "'Bebas Neue', sans-serif",
-            fontSize: 'clamp(44px, 7vw, 90px)',
-            lineHeight: 0.92, letterSpacing: '0.04em',
-            background: 'linear-gradient(90deg, #29B6F6, #0D47A1)',
-            WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent',
-            marginBottom: 6,
-            opacity: mounted ? 1 : 0,
-            animation: mounted ? 'fadeUp 0.6s ease 0.25s both' : 'none',
-          }}>WHAT'S WRONG</h1>
-
-          <h1 style={{
-            fontFamily: "'Bebas Neue', sans-serif",
-            fontSize: 'clamp(44px, 7vw, 90px)',
-            lineHeight: 0.92, letterSpacing: '0.04em',
-            color: 'white', marginBottom: 28,
-            opacity: mounted ? 1 : 0,
-            animation: mounted ? 'fadeUp 0.6s ease 0.3s both' : 'none',
-          }}>WITH YOUR SHOT</h1>
-
-          <p style={{
-            fontSize: isMobile ? 14 : 16,
-            color: 'rgba(255,255,255,0.45)',
-            lineHeight: 1.75, maxWidth: 440, fontWeight: 300, marginBottom: 36,
-            opacity: mounted ? 1 : 0,
-            animation: mounted ? 'fadeUp 0.6s ease 0.4s both' : 'none',
-          }}>
+          <p className={`text-[15px] md:text-[14px] text-white/40 max-w-[440px] leading-[1.75] font-light mb-9 ${mounted ? 'fade-5' : 'opacity-0'}`}>
             Upload your footage and get instant ML-powered feedback on
             exposure, composition, stability, sharpness, contrast, horizon
             and lighting — plus style detection and engagement prediction.
           </p>
 
-          {/* CTAs — shown on mobile below upload box, on desktop here */}
+          {/* CTA — desktop only */}
           {!isMobile && (
-            <div className="hero-ctas" style={{
-              opacity: mounted ? 1 : 0,
-              animation: mounted ? 'fadeUp 0.6s ease 0.5s both' : 'none',
-            }}>
-              <Link href="#how" className="ghost-btn" style={{
-                background: 'transparent',
-                border: '1px solid rgba(255,255,255,0.1)',
-                color: 'rgba(255,255,255,0.55)', padding: '12px 28px', borderRadius: 10,
-                fontWeight: 500, fontSize: 14, textDecoration: 'none',
-              }}>See How It Works ↓</Link>
+            <div className={`flex gap-3 mb-12 ${mounted ? 'fade-5' : 'opacity-0'}`}>
+              <Link
+                href="#how"
+                className="bg-transparent border border-white/10 text-white/55 px-7 py-3 rounded-xl font-medium text-[14px] tracking-[0.05em] hover:-translate-y-0.5 hover:border-white/20 hover:text-white/70 transition-all duration-200"
+              >
+                See How It Works ↓
+              </Link>
             </div>
           )}
 
           {/* Stats */}
-          <div className="hero-stats" style={{
-            opacity: mounted ? 1 : 0,
-            animation: mounted ? 'fadeUp 0.6s ease 0.6s both' : 'none',
-          }}>
-            {([['7', 'Quality Checks'], ['3', 'ML Models'], ['<5s', 'Analysis Time']] as [string, string][]).map(([v, l]) => (
+          <div className={`flex gap-10 sm:gap-6 ${mounted ? 'fade-6' : 'opacity-0'}`}>
+            {stats.map(([v, l]) => (
               <div key={l}>
-                <div style={{
-                  fontFamily: "'Bebas Neue', sans-serif",
-                  fontSize: isMobile ? 26 : 30, color: '#29B6F6', letterSpacing: '0.05em',
-                }}>{v}</div>
-                <div style={{
-                  fontSize: 11, color: 'rgba(255,255,255,0.3)',
-                  letterSpacing: '0.15em', textTransform: 'uppercase',
-                }}>{l}</div>
+                <div className="font-display text-[30px] sm:text-[26px] text-[#29B6F6] tracking-[0.05em] leading-none">
+                  {v}
+                </div>
+                <div className="text-[11px] text-white/30 tracking-[0.15em] uppercase mt-1">
+                  {l}
+                </div>
               </div>
             ))}
           </div>
         </div>
 
         {/* Right — Upload Box */}
-        <div style={{
-          opacity: mounted ? 1 : 0,
-          animation: mounted ? 'fadeUp 0.7s ease 0.3s both' : 'none',
-        }}>
+        <div className={`${mounted ? 'fade-4' : 'opacity-0'} pt-20 pb-20 lg:pt-24`}>
           <UploadBox />
         </div>
       </section>
 
       {/* ══ HOW IT WORKS ══ */}
-      <section id="how" className="content-section">
-        <div style={{ marginBottom: 48 }}>
-          <p style={{
-            fontFamily: "'DM Mono', monospace", fontSize: 11,
-            color: '#29B6F6', letterSpacing: '0.3em',
-            textTransform: 'uppercase', marginBottom: 12,
-          }}>The Process</p>
-          <h2 style={{
-            fontFamily: "'Bebas Neue', sans-serif",
-            fontSize: isMobile ? 40 : 52,
-            color: 'white', letterSpacing: '0.05em',
-          }}>HOW IT WORKS</h2>
+      <section id="how" className="relative z-[2] max-w-[1400px] mx-auto px-12 md:px-6 sm:px-5 py-20 border-t border-white/5">
+
+        <div className="mb-12">
+          <p className="font-mono text-[11px] text-[#29B6F6] tracking-[0.3em] uppercase mb-3">
+            The Process
+          </p>
+          <h2 className="font-display text-[clamp(40px,5vw,52px)] text-white tracking-[0.05em]">
+            HOW IT WORKS
+          </h2>
         </div>
 
-        <div className="steps-grid">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
           {steps.map((step, i) => (
             <div
               key={step.num}
-              className="step-card"
               onMouseEnter={() => setHoveredStep(i)}
               onMouseLeave={() => setHoveredStep(null)}
-              style={{
-                padding: '28px 24px',
-                background: hoveredStep === i ? 'rgba(41,182,246,0.05)' : 'transparent',
-                border: '1px solid',
-                borderColor: hoveredStep === i ? 'rgba(41,182,246,0.2)' : 'rgba(255,255,255,0.05)',
-                borderRadius: 14, position: 'relative', overflow: 'hidden',
-              }}>
-              <div style={{
-                fontFamily: "'Bebas Neue', sans-serif",
-                fontSize: isMobile ? 44 : 56,
-                color: 'rgba(41,182,246,0.12)',
-                letterSpacing: '0.05em', lineHeight: 1, marginBottom: 14,
-              }}>{step.num}</div>
-              <h4 style={{
-                fontFamily: "'Bebas Neue', sans-serif",
-                fontSize: 22, color: 'white',
-                letterSpacing: '0.08em', marginBottom: 8,
-              }}>{step.title}</h4>
-              <p style={{
-                fontSize: 13, color: 'rgba(255,255,255,0.4)',
-                lineHeight: 1.65, fontWeight: 300,
-              }}>{step.desc}</p>
+              className={`relative overflow-hidden rounded-2xl px-6 py-7 border transition-all duration-300 cursor-default ${
+                hoveredStep === i
+                  ? 'bg-[#29B6F6]/5 border-[#29B6F6]/20'
+                  : 'bg-transparent border-white/5'
+              }`}
+            >
+              <div className="font-display text-[56px] md:text-[44px] text-[#29B6F6]/[0.12] tracking-[0.05em] leading-none mb-3.5">
+                {step.num}
+              </div>
+              <h4 className="font-display text-[22px] text-white tracking-[0.08em] mb-2">
+                {step.title}
+              </h4>
+              <p className="text-[13px] text-white/40 leading-[1.65] font-light">
+                {step.desc}
+              </p>
             </div>
           ))}
         </div>
       </section>
 
       {/* ══ WHAT WE CHECK ══ */}
-      <section id="checks" className="content-section">
-        <div style={{ marginBottom: 48 }}>
-          <p style={{
-            fontFamily: "'DM Mono', monospace", fontSize: 11,
-            color: '#29B6F6', letterSpacing: '0.3em',
-            textTransform: 'uppercase', marginBottom: 12,
-          }}>Under the hood</p>
-          <h2 style={{
-            fontFamily: "'Bebas Neue', sans-serif",
-            fontSize: isMobile ? 40 : 52,
-            color: 'white', letterSpacing: '0.05em',
-          }}>7 QUALITY CHECKS</h2>
+      <section id="checks" className="relative z-[2] max-w-[1400px] mx-auto px-12 md:px-6 sm:px-5 py-20 border-t border-white/5">
+
+        <div className="mb-12">
+          <p className="font-mono text-[11px] text-[#29B6F6] tracking-[0.3em] uppercase mb-3">
+            Under the hood
+          </p>
+          <h2 className="font-display text-[clamp(40px,5vw,52px)] text-white tracking-[0.05em]">
+            7 QUALITY CHECKS
+          </h2>
         </div>
 
-        <div className="checks-grid">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3.5">
           {checks.map((check, i) => (
             <div
               key={check.name}
-              className="check-card"
               onMouseEnter={() => setHoveredCheck(i)}
               onMouseLeave={() => setHoveredCheck(null)}
-              style={{
-                padding: '22px 20px',
-                background: hoveredCheck === i ? 'rgba(41,182,246,0.06)' : 'rgba(13,21,38,0.7)',
-                border: `1px solid ${hoveredCheck === i ? 'rgba(41,182,246,0.25)' : 'rgba(30,48,96,0.5)'}`,
-                borderRadius: 14, position: 'relative', overflow: 'hidden',
-              }}>
-              {hoveredCheck === i && (
-                <div style={{
-                  position: 'absolute', top: 0, left: 0, right: 0, height: 1,
-                  background: 'linear-gradient(90deg, transparent, #29B6F6, transparent)',
-                }} />
-              )}
-              <div style={{ marginBottom: 12 }}>
+              className={`relative overflow-hidden rounded-2xl px-5 py-[22px] border transition-all duration-300 cursor-default ${
+                hoveredCheck === i
+                  ? 'bg-[#29B6F6]/[0.06] border-[#29B6F6]/25'
+                  : 'bg-[#0D1526]/70 border-[#1E3060]/50'
+              }`}
+            >
+              {/* Top glow line on hover */}
+              <div
+                className={`absolute top-0 left-0 right-0 h-px transition-all duration-300 ${hoveredCheck === i ? 'opacity-100' : 'opacity-0'}`}
+                style={{ background: 'linear-gradient(90deg, transparent, #29B6F6, transparent)' }}
+              />
+
+              <div className="mb-3">
                 <check.icon size={26} color="#29B6F6" strokeWidth={1.5} />
               </div>
-              <h4 style={{
-                fontFamily: "'Bebas Neue', sans-serif",
-                fontSize: 20, color: 'white',
-                letterSpacing: '0.08em', marginBottom: 8,
-              }}>{check.name}</h4>
-              <p style={{
-                fontSize: 12, color: 'rgba(255,255,255,0.38)',
-                lineHeight: 1.65, fontWeight: 300,
-              }}>{check.desc}</p>
+              <h4 className="font-display text-[20px] text-white tracking-[0.08em] mb-2">
+                {check.name}
+              </h4>
+              <p className="text-[12px] text-white/[0.38] leading-[1.65] font-light">
+                {check.desc}
+              </p>
             </div>
           ))}
         </div>
       </section>
 
       {/* ══ ML MODELS ══ */}
-      <section className="models-section">
+      <section className="relative z-[2] max-w-[1400px] mx-auto px-12 md:px-6 sm:px-5 py-20 border-t border-white/5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5">
         {models.map((m) => (
-          <div key={m.model} style={{
-            padding: '26px 24px',
-            background: 'rgba(13,21,38,0.7)',
-            border: '1px solid rgba(30,48,96,0.5)',
-            borderRadius: 16,
-          }}>
-            <p style={{
-              fontFamily: "'DM Mono', monospace", fontSize: 10,
-              color: m.color, letterSpacing: '0.2em',
-              textTransform: 'uppercase', marginBottom: 6,
-            }}>{m.model}</p>
-            <h4 style={{
-              fontFamily: "'Bebas Neue', sans-serif",
-              fontSize: 22, color: 'white',
-              letterSpacing: '0.08em', marginBottom: 10,
-            }}>{m.task}</h4>
-            <p style={{
-              fontSize: 13, color: 'rgba(255,255,255,0.38)',
-              lineHeight: 1.65, marginBottom: 16, fontWeight: 300,
-            }}>{m.desc}</p>
-            <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
+          <div
+            key={m.model}
+            className={`rounded-2xl px-6 py-[26px] border ${m.bgClass} ${m.borderClass}`}
+          >
+            <p className={`font-mono text-[10px] tracking-[0.2em] uppercase mb-1.5 ${m.textClass}`}>
+              {m.model}
+            </p>
+            <h4 className="font-display text-[22px] text-white tracking-[0.08em] mb-2.5">
+              {m.task}
+            </h4>
+            <p className="text-[13px] text-white/[0.38] leading-[1.65] font-light mb-4">
+              {m.desc}
+            </p>
+            <div className="flex flex-wrap gap-1.5">
               {m.styles.map((s) => (
-                <span key={s} style={{
-                  fontSize: 11, padding: '3px 10px', borderRadius: 6,
-                  background: `${m.color}12`,
-                  border: `1px solid ${m.color}25`,
-                  color: m.color,
-                  fontFamily: "'DM Mono', monospace",
-                }}>{s}</span>
+                <span
+                  key={s}
+                  className={`font-mono text-[11px] px-2.5 py-0.5 rounded-md border ${m.tagBgClass} ${m.tagBorderClass} ${m.textClass}`}
+                >
+                  {s}
+                </span>
               ))}
             </div>
           </div>

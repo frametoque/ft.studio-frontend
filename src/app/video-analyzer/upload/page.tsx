@@ -9,224 +9,102 @@ interface Step {
   desc: string
 }
 
-const grain = `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E")`
-
 const steps: Step[] = [
-  { icon: Frame,               label: 'Frame Extraction',    desc: '8 frames sampled evenly across the full timeline.' },
-  { icon: Bot,                 label: 'AI Analysis',         desc: '3 ML models run 7 quality checks simultaneously.' },
-  { icon: ChartNoAxesCombined, label: 'Score Report',        desc: 'Full breakdown with feedback and suggestions.' },
+  { icon: Frame,               label: 'Frame Extraction', desc: '8 frames sampled evenly across the full timeline.' },
+  { icon: Bot,                 label: 'AI Analysis',      desc: '3 ML models run 7 quality checks simultaneously.' },
+  { icon: ChartNoAxesCombined, label: 'Score Report',     desc: 'Full breakdown with feedback and suggestions.' },
 ]
 
 export default function UploadPage() {
   return (
-    <main style={{
-      minHeight: '100vh',
-      background: '#060B18',
-      fontFamily: "'DM Sans', sans-serif",
-      overflowX: 'hidden',
-      position: 'relative',
-    }}>
-
-      <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=Bebas+Neue&family=DM+Mono:wght@400;500&display=swap');
-        *, *::before, *::after { box-sizing: border-box; }
-        @keyframes fadeUp {
-          from { opacity: 0; transform: translateY(20px); }
-          to   { opacity: 1; transform: translateY(0); }
-        }
-        @keyframes scanline {
-          0%   { transform: translateY(-100%); }
-          100% { transform: translateY(100vh); }
-        }
-        @keyframes pulse {
-          0%, 100% { opacity: 1; }
-          50%       { opacity: 0.4; }
-        }
-        .step-card {
-          transition: border-color 0.25s ease, background 0.25s ease, transform 0.25s cubic-bezier(0.23,1,0.32,1);
-        }
-        .step-card:hover {
-          transform: translateY(-4px);
-          border-color: rgba(41,182,246,0.25) !important;
-          background: rgba(41,182,246,0.04) !important;
-        }
-        .fade-1 { animation: fadeUp 0.6s ease 0.1s both; }
-        .fade-2 { animation: fadeUp 0.6s ease 0.2s both; }
-        .fade-3 { animation: fadeUp 0.6s ease 0.3s both; }
-        .fade-4 { animation: fadeUp 0.6s ease 0.45s both; }
-        .fade-5 { animation: fadeUp 0.6s ease 0.55s both; }
-      `}</style>
-
-      {/* Grid */}
-      <div style={{
-        position: 'fixed', inset: 0, zIndex: 0, pointerEvents: 'none',
-        backgroundImage: `
-          linear-gradient(rgba(41,182,246,0.035) 1px, transparent 1px),
-          linear-gradient(90deg, rgba(41,182,246,0.035) 1px, transparent 1px)
-        `,
-        backgroundSize: '60px 60px',
-      }} />
-
-      {/* Scanline */}
-      <div style={{
-        position: 'fixed', inset: 0, pointerEvents: 'none',
-        zIndex: 1, overflow: 'hidden', opacity: 0.025,
-      }}>
-        <div style={{
-          position: 'absolute', left: 0, right: 0, height: 2,
-          background: 'linear-gradient(transparent, #29B6F6, transparent)',
-          animation: 'scanline 10s linear infinite',
-        }} />
-      </div>
-
-      {/* Grain */}
-      <div style={{
-        position: 'fixed', inset: 0, zIndex: 0,
-        backgroundImage: grain, backgroundRepeat: 'repeat',
-        pointerEvents: 'none',
-      }} />
+    <main className="min-h-screen bg-[#060B18] overflow-x-hidden relative">
 
       {/* Center glow */}
-      <div style={{
-        position: 'fixed', top: '20%', left: '50%',
-        transform: 'translateX(-50%)',
-        width: 600, height: 600, borderRadius: '50%',
-        background: 'radial-gradient(circle, rgba(41,182,246,0.06) 0%, transparent 70%)',
-        pointerEvents: 'none', zIndex: 0,
-      }} />
+      <div
+        className="fixed top-1/4 left-1/2 -translate-x-1/2 w-[600px] h-[600px] rounded-full pointer-events-none z-0"
+        style={{ background: 'radial-gradient(circle, rgba(41,182,246,0.06) 0%, transparent 70%)' }}
+      />
 
       <Navbar />
 
-      <section style={{
-        position: 'relative', zIndex: 2,
-        maxWidth: 720,
-        margin: '0 auto',
-        padding: '120px 24px 100px',
-        display: 'flex', flexDirection: 'column', alignItems: 'center',
-      }}>
+      <section className="relative z-[2] max-w-[720px] mx-auto px-6 pt-[120px] pb-[100px] flex flex-col items-center">
 
         {/* Step indicator */}
-        <div className="fade-1" style={{
-          display: 'flex', alignItems: 'center', gap: 10,
-          marginBottom: 28,
-        }}>
-          {/* Step dots */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: 6 }}>
-            <div style={{
-              width: 28, height: 6, borderRadius: 3,
-              background: 'linear-gradient(90deg, #29B6F6, #0288D1)',
-            }} />
-            <div style={{
-              width: 6, height: 6, borderRadius: 3,
-              background: 'rgba(255,255,255,0.15)',
-            }} />
+        <div className="flex items-center gap-2.5 mb-7 fade-1">
+          <div className="flex items-center gap-1.5">
+            <div className="w-7 h-1.5 rounded-full bg-gradient-to-r from-[#29B6F6] to-[#0288D1]" />
+            <div className="w-1.5 h-1.5 rounded-full bg-white/15" />
           </div>
-          <span style={{
-            fontFamily: "'DM Mono', monospace",
-            fontSize: 11, color: '#29B6F6',
-            letterSpacing: '0.25em', textTransform: 'uppercase',
-          }}>Step 1 of 2</span>
+          <span className="font-mono text-[11px] text-[#29B6F6] tracking-[0.25em] uppercase">
+            Step 1 of 2
+          </span>
         </div>
 
         {/* Heading */}
-        <h1 className="fade-2" style={{
-          fontFamily: "'Bebas Neue', sans-serif",
-          fontSize: 'clamp(52px, 8vw, 80px)',
-          letterSpacing: '0.04em', lineHeight: 0.95,
-          color: 'white', textAlign: 'center', marginBottom: 16,
-        }}>
+        <h1 className="font-display text-[clamp(52px,8vw,80px)] tracking-[0.04em] leading-[0.95] text-white text-center mb-4 fade-2">
           UPLOAD YOUR<br />
-          <span style={{
-            background: 'linear-gradient(90deg, #29B6F6, #0D47A1)',
-            WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent',
-          }}>FOOTAGE</span>
+          <span
+            className="inline-block"
+            style={{
+              background: 'linear-gradient(90deg, #29B6F6, #0D47A1)',
+              WebkitBackgroundClip: 'text',
+              WebkitTextFillColor: 'transparent',
+            }}
+          >
+            FOOTAGE
+          </span>
         </h1>
 
-        <p className="fade-3" style={{
-          fontSize: 15, color: 'rgba(255,255,255,0.4)',
-          textAlign: 'center', maxWidth: 440,
-          lineHeight: 1.75, fontWeight: 300, marginBottom: 48,
-        }}>
+        <p className="text-[15px] text-white/40 text-center max-w-[440px] leading-[1.75] font-light mb-12 fade-3">
           AI extracts key frames and runs 7 quality checks on your shot —
           exposure, composition, stability, style and more.
         </p>
 
         {/* Upload box */}
-        <div className="fade-4" style={{ width: '100%' }}>
+        <div className="w-full fade-4">
           <UploadBox />
         </div>
 
         {/* Divider */}
-        <div className="fade-5" style={{
-          width: '100%', marginTop: 56, marginBottom: 32,
-          display: 'flex', alignItems: 'center', gap: 16,
-        }}>
-          <div style={{ flex: 1, height: 1, background: 'rgba(255,255,255,0.06)' }} />
-          <span style={{
-            fontFamily: "'DM Mono', monospace",
-            fontSize: 10, color: 'rgba(255,255,255,0.25)',
-            letterSpacing: '0.25em', textTransform: 'uppercase',
-            whiteSpace: 'nowrap',
-          }}>What happens after upload</span>
-          <div style={{ flex: 1, height: 1, background: 'rgba(255,255,255,0.06)' }} />
+        <div className="w-full mt-14 mb-8 flex items-center gap-4 fade-5">
+          <div className="flex-1 h-px bg-white/[0.06]" />
+          <span className="font-mono text-[10px] text-white/25 tracking-[0.25em] uppercase whitespace-nowrap">
+            What happens after upload
+          </span>
+          <div className="flex-1 h-px bg-white/[0.06]" />
         </div>
 
-        {/* Steps */}
-        <div className="fade-5" style={{
-          width: '100%',
-          display: 'grid', gridTemplateColumns: 'repeat(3, 1fr)', gap: 12,
-        }}>
+        {/* Step cards */}
+        <div className="w-full grid grid-cols-1 sm:grid-cols-3 gap-3 fade-5">
           {steps.map((step, i) => (
-            <div key={step.label} className="step-card" style={{
-              padding: '22px 18px',
-              background: 'rgba(13,21,38,0.7)',
-              border: '1px solid rgba(30,48,96,0.5)',
-              borderRadius: 14, textAlign: 'center',
-              position: 'relative', overflow: 'hidden',
-            }}>
-              {/* Step number */}
-              <div style={{
-                position: 'absolute', top: 10, right: 12,
-                fontFamily: "'Bebas Neue', sans-serif",
-                fontSize: 28, color: 'rgba(41,182,246,0.1)',
-                letterSpacing: '0.05em', lineHeight: 1,
-              }}>0{i + 1}</div>
+            <div
+              key={step.label}
+              className="relative overflow-hidden px-[18px] py-[22px] bg-[#0D1526]/70 border border-[#1E3060]/50 rounded-2xl text-center hover:-translate-y-1 hover:border-[#29B6F6]/25 hover:bg-[#29B6F6]/[0.04] transition-all duration-250"
+            >
+              {/* Step number watermark */}
+              <span className="absolute top-2.5 right-3 font-display text-[28px] text-[#29B6F6]/10 leading-none">
+                0{i + 1}
+              </span>
 
-              <div style={{
-                display: 'flex', justifyContent: 'center', marginBottom: 14,
-              }}>
-                <div style={{
-                  width: 44, height: 44, borderRadius: 10,
-                  background: 'rgba(41,182,246,0.08)',
-                  border: '1px solid rgba(41,182,246,0.15)',
-                  display: 'flex', alignItems: 'center', justifyContent: 'center',
-                }}>
+              {/* Icon */}
+              <div className="flex justify-center mb-3.5">
+                <div className="w-11 h-11 rounded-xl bg-[#29B6F6]/[0.08] border border-[#29B6F6]/15 flex items-center justify-center">
                   <step.icon size={20} color="#29B6F6" strokeWidth={1.5} />
                 </div>
               </div>
 
-              <p style={{
-                fontFamily: "'Bebas Neue', sans-serif",
-                fontSize: 15, letterSpacing: '0.08em',
-                color: 'white', marginBottom: 6,
-              }}>{step.label}</p>
-
-              <p style={{
-                fontSize: 11, color: 'rgba(255,255,255,0.35)',
-                lineHeight: 1.6, fontWeight: 300,
-              }}>{step.desc}</p>
+              <p className="font-display text-[15px] tracking-[0.08em] text-white mb-1.5">
+                {step.label}
+              </p>
+              <p className="text-[11px] text-white/35 leading-[1.6] font-light">
+                {step.desc}
+              </p>
             </div>
           ))}
         </div>
 
         {/* Privacy note */}
-        <p style={{
-          marginTop: 28,
-          fontFamily: "'DM Mono', monospace",
-          fontSize: 11, color: 'rgba(255,255,255,0.2)',
-          letterSpacing: '0.1em', textAlign: 'center',
-          animation: 'fadeUp 0.6s ease 0.7s both',
-        }}>
+        <p className="mt-7 font-mono text-[11px] text-white/20 tracking-[0.1em] text-center fade-6">
           🔒 Your video is deleted immediately after analysis. Nothing is stored.
         </p>
 
