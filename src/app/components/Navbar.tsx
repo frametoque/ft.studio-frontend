@@ -5,7 +5,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 
 export default function Navbar() {
-  const [menuOpen, setMenuOpen] = useState(false)
+  const [menuOpen, setMenuOpen] = useState<boolean>(false)
 
   return (
     <>
@@ -119,7 +119,7 @@ export default function Navbar() {
         {/* Hamburger */}
         <button
           className={`hamburger ${menuOpen ? 'open' : ''}`}
-          onClick={() => setMenuOpen(o => !o)}
+          onClick={() => setMenuOpen(!menuOpen)}
           aria-label="Toggle menu"
         >
           <span /><span /><span />

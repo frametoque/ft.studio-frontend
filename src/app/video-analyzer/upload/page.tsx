@@ -1,15 +1,17 @@
 import Navbar from '@/app/components/Navbar'
 import Footer from '@/app/components/Footer'
 import UploadBox from '@/app/video-analyzer/components/UploadBox'
-import { Frame, ChartNoAxesCombined, Bot } from 'lucide-react'
+import { Frame, ChartNoAxesCombined, Bot, LucideIcon } from 'lucide-react'
 
-export const metadata = {
-  title: 'Video Analyzer — Upload',
+interface Step {
+  icon: LucideIcon
+  label: string
+  desc: string
 }
 
 const grain = `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E")`
 
-const steps = [
+const steps: Step[] = [
   { icon: Frame,               label: 'Frame Extraction',    desc: '8 frames sampled evenly across the full timeline.' },
   { icon: Bot,                 label: 'AI Analysis',         desc: '3 ML models run 7 quality checks simultaneously.' },
   { icon: ChartNoAxesCombined, label: 'Score Report',        desc: 'Full breakdown with feedback and suggestions.' },

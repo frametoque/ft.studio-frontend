@@ -1,8 +1,7 @@
-// lib/keepAlive.js
-export const keepAlive = () => {
+export const keepAlive = (): void => {
   setInterval(async () => {
     try {
       await fetch(`${process.env.NEXT_PUBLIC_API_URL}`)
     } catch (_) {}
-  }, 14 * 60 * 1000) // every 14 minutes
+  }, 14 * 60 * 1000)
 }

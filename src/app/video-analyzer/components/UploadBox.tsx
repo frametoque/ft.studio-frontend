@@ -1,19 +1,40 @@
 'use client'
 
 import { useCallback, useState } from 'react'
-import { useDropzone } from 'react-dropzone'
+import { useDropzone, FileRejection } from 'react-dropzone'
 import { useRouter } from 'next/navigation'
 import { FileVideo, FileVideo2 } from 'lucide-react'
 
 const API = process.env.NEXT_PUBLIC_API_URL
 
+interface AnalysisResult {
+  filename: string
+  overall_score: number
+  style?: {
+    detected: string
+  }
+  engagement?: {
+    level: string
+  }
+  checks: Record<string, unknown>
+}
+
+interface HistoryItem {
+  filename: string
+  overall_score: number
+  style: string
+  engagement_level: string
+  checks: Record<string, unknown>
+  timestamp: string
+}
+
 export default function UploadBox() {
   const router = useRouter()
-  const [file, setFile] = useState(null)
-  const [uploading, setUploading] = useState(false)
-  const [error, setError] = useState(null)
+  const [file, setFile] = useState<File | null>(null)
+  const [uploading, setUploading] = useState<boolean>(false)
+  const [error, setError] = useState<string | null>(null)
 
-  const onDrop = useCallback((acceptedFiles, rejectedFiles) => {
+  const onDrop = useCallback((acceptedFiles: File[], rejectedFiles: FileRejection[]) => {
     setError(null)
     if (rejectedFiles.length > 0) {
       setError('Invalid file. Please upload an MP4, MOV or AVI under 100MB.')
@@ -49,11 +70,11 @@ export default function UploadBox() {
 
       if (!res.ok) throw new Error('Analysis failed')
 
-      const data = await res.json()
+      const data: AnalysisResult = await res.json()
 
       localStorage.setItem('frametoque_results', JSON.stringify(data))
 
-      const history = JSON.parse(localStorage.getItem('frametoque_history') || '[]')
+      const history: HistoryItem[] = JSON.parse(localStorage.getItem('frametoque_history') || '[]')
       history.push({
         filename:         data.filename,
         overall_score:    data.overall_score,
@@ -74,7 +95,7 @@ export default function UploadBox() {
     }
   }
 
-  const formatSize = (bytes) => (bytes / (1024 * 1024)).toFixed(1) + ' MB'
+  const formatSize = (bytes: number): string => (bytes / (1024 * 1024)).toFixed(1) + ' MB'
 
   return (
     <div style={{ width: '100%' }}>
@@ -261,7 +282,7 @@ export default function UploadBox() {
           </div>
           <button
             className="remove-btn"
-            onClick={(e) => { e.stopPropagation(); setFile(null) }}
+            onClick={(e: React.MouseEvent<HTMLButtonElement>) => { e.stopPropagation(); setFile(null) }}
           >
             ✕ REMOVE
           </button>

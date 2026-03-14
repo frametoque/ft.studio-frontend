@@ -5,10 +5,94 @@ import { useRouter } from 'next/navigation'
 import Navbar from '@/app/components/Navbar'
 import Footer from '@/app/components/Footer'
 
+interface Check {
+  name: string
+  score: number
+  feedback: string
+}
+
+interface Style {
+  detected: string
+  reason: string
+  tip: string
+}
+
+interface Engagement {
+  emoji: string
+  level: string
+  description: string
+  key_factors: string[]
+}
+
+interface ProComparison {
+  similarity_score: number
+  label: string
+  compared_against: string
+}
+
+interface Lighting {
+  score: number
+  issues: string[]
+}
+
+interface Stability {
+  motion_type: string
+}
+
+interface AnalysisResult {
+  filename: string
+  overall_score: number
+  style?: Style
+  engagement?: Engagement
+  pro_comparison?: ProComparison
+  lighting?: Lighting
+  stability?: Stability
+  checks?: Check[]
+  suggestions?: string[]
+}
+
+interface HistoryItem {
+  filename: string
+  overall_score: number
+  style: string
+  engagement_level: string
+  checks: Record<string, unknown>
+  timestamp: string
+}
+
+interface ScoreRingProps {
+  score: number
+  size?: number
+  stroke?: number
+}
+
+interface ScoreBarProps {
+  score: number
+  animated?: boolean
+}
+
+interface HistoryChartProps {
+  history: HistoryItem[]
+}
+
+interface CardProps {
+  children: React.ReactNode
+  style?: React.CSSProperties
+}
+
+interface LabelProps {
+  children: React.ReactNode
+}
+
+interface ArrowItemProps {
+  text: string
+  color?: string
+}
+
 const grain = `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E")`
 
 // ── Score ring ───────────────────────────────────────────────────
-function ScoreRing({ score, size = 140, stroke = 9 }) {
+function ScoreRing({ score, size = 140, stroke = 9 }: ScoreRingProps) {
   const r = (size - stroke) / 2
   const circ = 2 * Math.PI * r
   const offset = circ - (score / 100) * circ
@@ -27,7 +111,7 @@ function ScoreRing({ score, size = 140, stroke = 9 }) {
 }
 
 // ── Score bar ────────────────────────────────────────────────────
-function ScoreBar({ score, animated = true }) {
+function ScoreBar({ score, animated = true }: ScoreBarProps) {
   const color = score >= 75 ? '#4ade80' : score >= 50 ? '#facc15' : '#f87171'
   return (
     <div style={{
@@ -45,7 +129,7 @@ function ScoreBar({ score, animated = true }) {
 }
 
 // ── History chart ────────────────────────────────────────────────
-function HistoryChart({ history }) {
+function HistoryChart({ history }: HistoryChartProps) {
   return (
     <div style={{ display: 'flex', alignItems: 'flex-end', gap: 4, height: 56, width: '100%' }}>
       {history.map((h, i) => {
@@ -83,7 +167,7 @@ function HistoryChart({ history }) {
 }
 
 // ── Card wrapper ─────────────────────────────────────────────────
-function Card({ children, style = {} }) {
+function Card({ children, style = {} }: CardProps) {
   return (
     <div style={{
       background: 'rgba(13,21,38,0.8)',
@@ -97,7 +181,7 @@ function Card({ children, style = {} }) {
 }
 
 // ── Section label ────────────────────────────────────────────────
-function Label({ children }) {
+function Label({ children }: LabelProps) {
   return (
     <p style={{
       fontFamily: "'DM Mono', monospace",
@@ -109,7 +193,7 @@ function Label({ children }) {
 }
 
 // ── Arrow list item ──────────────────────────────────────────────
-function ArrowItem({ text, color = '#29B6F6' }) {
+function ArrowItem({ text, color = '#29B6F6' }: ArrowItemProps) {
   return (
     <li style={{ display: 'flex', alignItems: 'flex-start', gap: 8 }}>
       <span style={{ color, fontSize: 12, marginTop: 2, flexShrink: 0 }}>→</span>
@@ -123,10 +207,10 @@ function ArrowItem({ text, color = '#29B6F6' }) {
 // ═══════════════════════════════════════════════════════════════════
 export default function ResultsPage() {
   const router = useRouter()
-  const [results, setResults]   = useState(null)
-  const [history, setHistory]   = useState([])
-  const [activeTab, setActiveTab] = useState('overview')
-  const [isMobile, setIsMobile] = useState(false)
+  const [results, setResults] = useState<AnalysisResult | null>(null)
+  const [history, setHistory] = useState<HistoryItem[]>([])
+  const [activeTab, setActiveTab] = useState<string>('overview')
+  const [isMobile, setIsMobile] = useState<boolean>(false)
 
   useEffect(() => {
     const data = localStorage.getItem('frametoque_results')
@@ -165,7 +249,7 @@ export default function ResultsPage() {
     </main>
   )
 
-  const score      = results.overall_score
+  const score = results.overall_score
   const scoreColor = score >= 75 ? '#4ade80' : score >= 50 ? '#facc15' : '#f87171'
   const scoreLabel = score >= 75 ? 'Great Shot' : score >= 50 ? 'Decent Shot' : 'Needs Work'
 
@@ -554,7 +638,7 @@ export default function ResultsPage() {
 
             {/* Col 3 */}
             <div className="overview-col3" style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
-              {results.lighting?.issues?.length > 0 && (
+              {results.lighting?.issues && results.lighting.issues.length > 0 && (
                 <Card>
                   <Label>Lighting</Label>
                   <ul style={{ listStyle: 'none', padding: 0, display: 'flex', flexDirection: 'column', gap: 8 }}>
@@ -565,7 +649,7 @@ export default function ResultsPage() {
                 </Card>
               )}
 
-              {results.suggestions?.length > 0 && (
+              {results.suggestions && results.suggestions.length > 0 && (
                 <Card>
                   <Label>💡 Suggestions</Label>
                   <ul style={{ listStyle: 'none', padding: 0, display: 'flex', flexDirection: 'column', gap: 8 }}>
@@ -666,7 +750,7 @@ export default function ResultsPage() {
                 </Card>
               )}
 
-              {results.suggestions?.length > 0 && (
+              {results.suggestions && results.suggestions.length > 0 && (
                 <Card>
                   <Label>💡 Suggestions</Label>
                   <ul style={{ listStyle: 'none', padding: 0, display: 'flex', flexDirection: 'column', gap: 8 }}>
@@ -767,15 +851,17 @@ export default function ResultsPage() {
 
             <div style={{ display: 'flex', flexDirection: 'column', gap: 14 }}>
               {history.length >= 2 && (() => {
-                const scores   = history.map(h => h.overall_score)
-                const avg      = Math.round(scores.reduce((a, b) => a + b, 0) / scores.length)
-                const trend    = scores[scores.length - 1] - scores[0]
+                const scores = history.map(h => h.overall_score)
+                const avg = Math.round(scores.reduce((a, b) => a + b, 0) / scores.length)
+                const trend = scores[scores.length - 1] - scores[0]
                 const trendLabel = trend > 0 ? `↑ +${trend}` : trend < 0 ? `↓ ${trend}` : '→ 0'
                 const trendColor = trend > 0 ? '#4ade80' : trend < 0 ? '#f87171' : '#facc15'
-                const best     = Math.max(...scores)
-                const worst    = Math.min(...scores)
-                const styleCounts = {}
-                history.forEach(h => { styleCounts[h.style] = (styleCounts[h.style] || 0) + 1 })
+                const best = Math.max(...scores)
+                const worst = Math.min(...scores)
+                const styleCounts: Record<string, number> = {}
+                history.forEach(h => { 
+                  if (h.style) styleCounts[h.style] = (styleCounts[h.style] || 0) + 1 
+                })
                 const topStyle = Object.entries(styleCounts).sort((a, b) => b[1] - a[1])[0]?.[0]
 
                 return (
@@ -826,7 +912,7 @@ export default function ResultsPage() {
                           avg >= 60 && avg < 75 && "You're improving! Focus on stability — get a tripod or gimbal.",
                           avg >= 75 && "Great average! Push for consistency — aim for 80+ on every upload.",
                         ].filter(Boolean).map((tip, i) => (
-                          <ArrowItem key={i} text={tip} />
+                          <ArrowItem key={i} text={tip as string} />
                         ))}
                       </ul>
                     </Card>

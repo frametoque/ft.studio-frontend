@@ -1,14 +1,34 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { Sun, Ruler, Sliders, Eye, Crosshair, Target, Lightbulb } from 'lucide-react'
+import { Sun, Ruler, Sliders, Eye, Crosshair, Target, Lightbulb, LucideIcon } from 'lucide-react'
 import NavBar from '@/app/components/Navbar'
 import Footer from '@/app/components/Footer'
 import UploadBox from '@/app/video-analyzer/components/UploadBox'
 import Link from 'next/link'
 import './hero.css'
 
-const checks = [
+interface Check {
+  icon: LucideIcon
+  name: string
+  desc: string
+}
+
+interface Step {
+  num: string
+  title: string
+  desc: string
+}
+
+interface Model {
+  model: string
+  task: string
+  desc: string
+  styles: string[]
+  color: string
+}
+
+const checks: Check[] = [
   { icon: Sun,       name: 'Exposure',    desc: 'Gaussian curve analysis of brightness against cinematic ideal' },
   { icon: Ruler,     name: 'Composition', desc: 'Rule of thirds intersection scoring via edge detection' },
   { icon: Sliders,   name: 'Contrast',    desc: 'Grayscale standard deviation mapped to visual depth' },
@@ -18,32 +38,55 @@ const checks = [
   { icon: Lightbulb, name: 'Lighting',    desc: 'Quadrant brightness balance and direction analysis' },
 ]
 
-const steps = [
+const steps: Step[] = [
   { num: '01', title: 'Upload',  desc: 'Drop any MP4, MOV or AVI file up to 500MB.' },
   { num: '02', title: 'Extract', desc: '8 frames sampled evenly across the full timeline.' },
   { num: '03', title: 'Analyze', desc: 'ML models run 7 quality checks and style classification.' },
   { num: '04', title: 'Results', desc: 'Scores, feedback, engagement prediction and pro comparison.' },
 ]
 
+const models: Model[] = [
+  {
+    model: 'KNN Classifier',
+    task: 'Style Detection',
+    desc: 'Detects shooting style from motion, color temperature, and frame composition patterns.',
+    styles: ['Interview', 'Documentary', 'Travel', 'Cinematic', 'Action', 'Lifestyle'],
+    color: '#29B6F6',
+  },
+  {
+    model: 'Random Forest',
+    task: 'Quality Scoring',
+    desc: 'Predicts overall quality 0–100 from 5 cinematography features weighted by industry standards.',
+    styles: ['Exposure 25%', 'Composition 25%', 'Contrast 20%', 'Sharpness 15%', 'Stability 15%'],
+    color: '#AB47BC',
+  },
+  {
+    model: 'Gradient Boosting',
+    task: 'Engagement Prediction',
+    desc: 'Predicts viewer engagement level from quality score, style, and shooting characteristics.',
+    styles: ['High 🔥', 'Medium 📈', 'Low ⚠️'],
+    color: '#66BB6A',
+  },
+]
+
 const grain = `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E")`
 
-// ═══════════════════════════════════════════════════════════════════
-// MAIN PAGE
-// ═══════════════════════════════════════════════════════════════════
 export default function VideoAnalyzerLanding() {
-  const [mounted,      setMounted]      = useState(false)
-  const [mousePos,     setMousePos]     = useState({ x: 0, y: 0 })
-  const [hoveredCheck, setHoveredCheck] = useState(null)
-  const [hoveredStep,  setHoveredStep]  = useState(null)
-  const [isMobile,     setIsMobile]     = useState(false)
+  const [mounted, setMounted] = useState<boolean>(false)
+  const [mousePos, setMousePos] = useState<{ x: number; y: number }>({ x: 0, y: 0 })
+  const [hoveredCheck, setHoveredCheck] = useState<number | null>(null)
+  const [hoveredStep, setHoveredStep] = useState<number | null>(null)
+  const [isMobile, setIsMobile] = useState<boolean>(false)
 
   useEffect(() => {
     setMounted(true)
-    const handleMouse  = (e) => setMousePos({ x: e.clientX, y: e.clientY })
-    const checkMobile  = () => setIsMobile(window.innerWidth < 768)
+    const handleMouse = (e: MouseEvent) => setMousePos({ x: e.clientX, y: e.clientY })
+    const checkMobile = () => setIsMobile(window.innerWidth < 768)
+    
     window.addEventListener('mousemove', handleMouse)
     window.addEventListener('resize', checkMobile)
     checkMobile()
+    
     return () => {
       window.removeEventListener('mousemove', handleMouse)
       window.removeEventListener('resize', checkMobile)
@@ -58,8 +101,6 @@ export default function VideoAnalyzerLanding() {
       overflowX: 'hidden',
       position: 'relative',
     }}>
-
-      
 
       {/* Cursor glow — desktop only */}
       {mounted && !isMobile && (
@@ -184,7 +225,7 @@ export default function VideoAnalyzerLanding() {
             opacity: mounted ? 1 : 0,
             animation: mounted ? 'fadeUp 0.6s ease 0.6s both' : 'none',
           }}>
-            {[['7', 'Quality Checks'], ['3', 'ML Models'], ['<5s', 'Analysis Time']].map(([v, l]) => (
+            {([['7', 'Quality Checks'], ['3', 'ML Models'], ['<5s', 'Analysis Time']] as [string, string][]).map(([v, l]) => (
               <div key={l}>
                 <div style={{
                   fontFamily: "'Bebas Neue', sans-serif",
@@ -310,29 +351,7 @@ export default function VideoAnalyzerLanding() {
 
       {/* ══ ML MODELS ══ */}
       <section className="models-section">
-        {[
-          {
-            model: 'KNN Classifier',
-            task: 'Style Detection',
-            desc: 'Detects shooting style from motion, color temperature, and frame composition patterns.',
-            styles: ['Interview', 'Documentary', 'Travel', 'Cinematic', 'Action', 'Lifestyle'],
-            color: '#29B6F6',
-          },
-          {
-            model: 'Random Forest',
-            task: 'Quality Scoring',
-            desc: 'Predicts overall quality 0–100 from 5 cinematography features weighted by industry standards.',
-            styles: ['Exposure 25%', 'Composition 25%', 'Contrast 20%', 'Sharpness 15%', 'Stability 15%'],
-            color: '#AB47BC',
-          },
-          {
-            model: 'Gradient Boosting',
-            task: 'Engagement Prediction',
-            desc: 'Predicts viewer engagement level from quality score, style, and shooting characteristics.',
-            styles: ['High 🔥', 'Medium 📈', 'Low ⚠️'],
-            color: '#66BB6A',
-          },
-        ].map(m => (
+        {models.map((m) => (
           <div key={m.model} style={{
             padding: '26px 24px',
             background: 'rgba(13,21,38,0.7)',
@@ -354,7 +373,7 @@ export default function VideoAnalyzerLanding() {
               lineHeight: 1.65, marginBottom: 16, fontWeight: 300,
             }}>{m.desc}</p>
             <div style={{ display: 'flex', flexWrap: 'wrap', gap: 6 }}>
-              {m.styles.map(s => (
+              {m.styles.map((s) => (
                 <span key={s} style={{
                   fontSize: 11, padding: '3px 10px', borderRadius: 6,
                   background: `${m.color}12`,
@@ -367,8 +386,6 @@ export default function VideoAnalyzerLanding() {
           </div>
         ))}
       </section>
-
-    
 
       <Footer />
     </div>

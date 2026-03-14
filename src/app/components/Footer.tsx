@@ -1,8 +1,34 @@
-import Link from 'next/link'
-import Image from 'next/image'
-import { Target, Zap, Lock } from 'lucide-react'
+import { Target, Zap, Lock, LucideIcon } from 'lucide-react'
+
+// Define the feature item interface
+interface FeatureItem {
+  icon: LucideIcon
+  title: string
+  desc: string
+}
+
+// Define features outside component for cleaner code
+const features: FeatureItem[] = [
+  { 
+    icon: Target, 
+    title: 'Craft-first', 
+    desc: 'Every metric is grounded in cinematography principles, not generic image processing.' 
+  },
+  { 
+    icon: Zap, 
+    title: 'Instant feedback', 
+    desc: 'ML inference runs in seconds. No waiting, no queues.' 
+  },
+  { 
+    icon: Lock, 
+    title: 'Your data stays yours', 
+    desc: 'Videos are analyzed and immediately deleted. Nothing is stored.' 
+  },
+]
 
 export default function Footer() {
+  const currentYear = new Date().getFullYear()
+  
   return (
     <>
       <style>{`
@@ -64,11 +90,7 @@ export default function Footer() {
         </div>
 
         <div className="about-right">
-          {[
-            { icon: Target, title: 'Craft-first', desc: 'Every metric is grounded in cinematography principles, not generic image processing.' },
-            { icon: Zap,    title: 'Instant feedback', desc: 'ML inference runs in seconds. No waiting, no queues.' },
-            { icon: Lock,   title: 'Your data stays yours', desc: 'Videos are analyzed and immediately deleted. Nothing is stored.' },
-          ].map(({ icon: Icon, title, desc }) => (
+          {features.map(({ icon: Icon, title, desc }) => (
             <div key={title} style={{
               display: 'flex', gap: 16, padding: '18px 20px',
               background: 'rgba(13,21,38,0.6)',
@@ -93,7 +115,7 @@ export default function Footer() {
           }}>FRAMETOQUE STUDIO</span>
         </div>
         <p style={{ fontSize: 12, color: 'rgba(255,255,255,0.2)', fontFamily: "'DM Mono', monospace" }}>
-          © {new Date().getFullYear()} Frame Toque Digital. All rights reserved.
+          © {currentYear} Frame Toque Digital. All rights reserved.
         </p>
       </footer>
     </>

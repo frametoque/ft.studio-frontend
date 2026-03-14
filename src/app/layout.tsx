@@ -1,7 +1,9 @@
 import '@/app/globals.css'
 import KeepAlive from '@/app/components/KeepAlive'
+import { Metadata, Viewport } from 'next'
+import { ReactNode } from 'react'
 
-export const metadata = {
+export const metadata: Metadata = {
   title: {
     default: 'FrameToque Studio',
     template: '%s | FrameToque Studio',
@@ -23,7 +25,18 @@ export const metadata = {
   },
 }
 
-export default function RootLayout({ children }) {
+// Optional: Add viewport configuration if needed
+export const viewport: Viewport = {
+  themeColor: '#000000', // You can adjust this color as needed
+  width: 'device-width',
+  initialScale: 1,
+}
+
+interface RootLayoutProps {
+  children: ReactNode
+}
+
+export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang="en">
       <head>
