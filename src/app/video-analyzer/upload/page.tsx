@@ -1,5 +1,5 @@
-import Navbar from '@/app/components/Navbar'
-import Footer from '@/app/components/Footer'
+import Navbar from '@/components/Navbar'
+import Footer from '@/components/Footer'
 import UploadBox from '@/app/video-analyzer/components/UploadBox'
 import { Frame, ChartNoAxesCombined, Bot, LucideIcon } from 'lucide-react'
 

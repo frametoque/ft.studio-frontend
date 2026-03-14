@@ -1,5 +1,5 @@
 import '@/app/globals.css'
-import KeepAlive from '@/app/components/KeepAlive'
+import KeepAlive from '@/components/KeepAlive'
 import { Metadata, Viewport } from 'next'
 import { ReactNode } from 'react'
 

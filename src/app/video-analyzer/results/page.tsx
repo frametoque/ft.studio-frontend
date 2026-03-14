@@ -2,8 +2,8 @@
 
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
-import Navbar from '@/app/components/Navbar'
-import Footer from '@/app/components/Footer'
+import Navbar from '@/components/Navbar'
+import Footer from '@/components/Footer'
 
 interface Check {
   name: string

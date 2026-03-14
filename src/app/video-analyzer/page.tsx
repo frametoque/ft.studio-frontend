@@ -2,8 +2,8 @@
 
 import { useState, useEffect } from 'react'
 import { Sun, Ruler, Sliders, Eye, Crosshair, Target, Lightbulb, LucideIcon } from 'lucide-react'
-import NavBar from '@/app/components/Navbar'
-import Footer from '@/app/components/Footer'
+import NavBar from '@/components/Navbar'
+import Footer from '@/components/Footer'
 import UploadBox from '@/app/video-analyzer/components/UploadBox'
 import Link from 'next/link'
 import './hero.css'

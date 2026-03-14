@@ -2,8 +2,8 @@
 
 import { useState, useEffect } from 'react'
 import { Film, Palette, Music, Video } from 'lucide-react'
-import NavBar from '@/app/components/Navbar'
-import Footer from '@/app/components/Footer'
+import NavBar from '@/components/Navbar'
+import Footer from '@/components/Footer'
 import Link from 'next/link'
 
 const tools = [
