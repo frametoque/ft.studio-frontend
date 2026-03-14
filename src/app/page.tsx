@@ -121,7 +121,6 @@ export default function StudioLanding() {
 
       <NavBar />
 
-      {/* ══ HERO LAYOUT ══ */}
       <section className="relative z-[2] max-w-[1400px] mx-auto px-12 grid grid-cols-1 lg:grid-cols-2 min-h-[calc(100vh-64px)] items-center gap-0 lg:px-8 md:px-4">
 
         {/* LEFT — hero copy */}
