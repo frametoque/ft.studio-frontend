@@ -31,43 +31,6 @@ export default function Footer() {
   
   return (
     <>
-      <style>{`
-        .about-section {
-          position: relative; z-index: 2;
-          border-top: 1px solid rgba(255,255,255,0.05);
-          padding: 72px 48px;
-          max-width: 1200px; margin: 0 auto;
-          display: flex; gap: 80; align-items: center;
-          flex-wrap: wrap;
-        }
-        .about-left { flex: 1 1 320px; }
-        .about-right { flex: 1 1 320px; display: flex; flex-direction: column; gap: 16px; }
-        .about-heading { font-family: 'Bebas Neue', sans-serif; font-size: 44px; color: white; letter-spacing: 0.05em; line-height: 1; margin-bottom: 20px; }
-        .footer-inner {
-          position: relative; z-index: 2;
-          border-top: 1px solid rgba(255,255,255,0.05);
-          padding: 28px 48px;
-          display: flex; justify-content: space-between; align-items: center;
-          flex-wrap: wrap; gap: 12px;
-        }
-
-        @media (max-width: 767px) {
-          .about-section {
-            padding: 48px 20px;
-            gap: 40px;
-            flex-direction: column;
-          }
-          .about-left, .about-right { flex: 1 1 100%; }
-          .about-heading { font-size: 36px; }
-          .footer-inner {
-            padding: 24px 20px;
-            flex-direction: column;
-            align-items: flex-start;
-            gap: 8px;
-          }
-        }
-      `}</style>
-
       {/* ABOUT STRIP */}
       <section id="about" className="about-section">
         <div className="about-left">

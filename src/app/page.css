@@ -1,0 +1,237 @@
+ @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600&family=Bebas+Neue&family=DM+Mono:wght@400;500&display=swap');
+
+ *,
+ *::before,
+ *::after {
+     box-sizing: border-box;
+ }
+
+ @keyframes fadeUp {
+     from {
+         opacity: 0;
+         transform: translateY(24px);
+     }
+
+     to {
+         opacity: 1;
+         transform: translateY(0);
+     }
+ }
+
+ @keyframes fadeIn {
+     from {
+         opacity: 0;
+     }
+
+     to {
+         opacity: 1;
+     }
+ }
+
+ @keyframes pulse {
+
+     0%,
+     100% {
+         opacity: 1;
+         box-shadow: 0 0 0 0 rgba(41, 182, 246, 0.5);
+     }
+
+     50% {
+         opacity: 0.5;
+         box-shadow: 0 0 0 6px rgba(41, 182, 246, 0);
+     }
+ }
+
+ @keyframes scanline {
+     0% {
+         transform: translateY(-100%);
+     }
+
+     100% {
+         transform: translateY(100vh);
+     }
+ }
+
+ @keyframes shimmer {
+     0% {
+         background-position: -200% center;
+     }
+
+     100% {
+         background-position: 200% center;
+     }
+ }
+
+ @keyframes scrollHint {
+
+     0%,
+     100% {
+         opacity: 0.3;
+         transform: translateY(0);
+     }
+
+     50% {
+         opacity: 0.7;
+         transform: translateY(6px);
+     }
+ }
+
+ .live-badge {
+     animation: pulse 2.5s ease-in-out infinite;
+ }
+
+ .tool-card {
+     transition: transform 0.3s cubic-bezier(0.23, 1, 0.32, 1),
+         border-color 0.3s ease, box-shadow 0.3s ease,
+         background 0.3s ease;
+ }
+
+ .tool-card:hover {
+     transform: translateY(-6px);
+ }
+
+ .cta-primary {
+     background: linear-gradient(135deg, #29B6F6, #0288D1);
+     color: white;
+     border: none;
+     padding: 13px 28px;
+     border-radius: 10px;
+     font-family: 'DM Sans', sans-serif;
+     font-weight: 600;
+     font-size: 14px;
+     letter-spacing: 0.05em;
+     cursor: pointer;
+     text-decoration: none;
+     display: inline-block;
+     transition: transform 0.2s, box-shadow 0.2s;
+ }
+
+ .cta-primary:hover {
+     transform: translateY(-2px);
+     box-shadow: 0 10px 36px rgba(41, 182, 246, 0.4);
+ }
+
+ .cta-ghost {
+     background: transparent;
+     border: 1px solid rgba(255, 255, 255, 0.12);
+     color: rgba(255, 255, 255, 0.6);
+     padding: 13px 28px;
+     border-radius: 10px;
+     font-family: 'DM Sans', sans-serif;
+     font-weight: 500;
+     font-size: 14px;
+     letter-spacing: 0.05em;
+     cursor: pointer;
+     text-decoration: none;
+     display: inline-block;
+     transition: border-color 0.2s, color 0.2s, transform 0.2s;
+ }
+
+ .cta-ghost:hover {
+     border-color: rgba(41, 182, 246, 0.4);
+     color: white;
+     transform: translateY(-2px);
+ }
+
+ /* ── Responsive layout ── */
+ .hero-section {
+     position: relative;
+     z-index: 2;
+     min-height: calc(100vh - 64px);
+     display: grid;
+     grid-template-columns: 1fr 1fr;
+     gap: 0;
+     max-width: 1400px;
+     margin: 0 auto;
+     padding: 0 48px;
+     align-items: center;
+ }
+
+ .hero-left {
+     padding-right: 60px;
+     padding-top: 80px;
+     padding-bottom: 80px;
+     position: sticky;
+     top: 64px;
+ }
+
+ .hero-right {
+     padding-top: 96px;
+     padding-bottom: 80px;
+     display: grid;
+     grid-template-columns: 1fr 1fr;
+     gap: 14px;
+     align-content: start;
+ }
+
+ .hero-stats {
+     display: flex;
+     gap: 40px;
+     margin-top: 52px;
+ }
+
+ .hero-ctas {
+     display: flex;
+     gap: 12px;
+     flex-wrap: wrap;
+ }
+
+ @media (max-width: 1024px) {
+     .hero-section {
+         grid-template-columns: 1fr;
+         padding: 0 32px;
+         min-height: unset;
+     }
+
+     .hero-left {
+         position: static;
+         padding-right: 0;
+         padding-top: 56px;
+         padding-bottom: 40px;
+     }
+
+     .hero-right {
+         padding-top: 0;
+         padding-bottom: 64px;
+     }
+ }
+
+ @media (max-width: 767px) {
+     .hero-section {
+         padding: 0 16px;
+     }
+
+     .hero-left {
+         padding-top: 40px;
+         padding-bottom: 32px;
+     }
+
+     .hero-right {
+         grid-template-columns: 1fr;
+         padding-bottom: 48px;
+         gap: 12px;
+     }
+
+     .hero-stats {
+         gap: 24px;
+         margin-top: 36px;
+     }
+
+     .cta-primary,
+     .cta-ghost {
+         padding: 12px 20px;
+         font-size: 13px;
+         width: 100%;
+         text-align: center;
+     }
+
+     .hero-ctas {
+         flex-direction: column;
+     }
+ }
+
+ @media (max-width: 480px) {
+     .hero-right {
+         grid-template-columns: 1fr;
+     }
+ }

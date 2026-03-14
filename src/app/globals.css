@@ -1,8 +1,30 @@
-/* ─────────────────────────────────────────────────────────────────
-   FRAMETOQUE STUDIO — globals.css
-   All keyframes, base styles, component classes, and responsive
-   rules live here. No font-family declarations inside components.
-───────────────────────────────────────────────────────────────── */
+@import "tailwindcss";
+
+@layer base {
+    @font-face {
+        font-family: 'DM Sans';
+        font-style: normal;
+        font-weight: 300 600;
+        font-display: swap;
+        src: url(https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500;600) format('woff2');
+    }
+
+    @font-face {
+        font-family: 'Bebas Neue';
+        font-style: normal;
+        font-weight: 400;
+        font-display: swap;
+        src: url(https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap) format('woff2');
+    }
+
+    @font-face {
+        font-family: 'DM Mono';
+        font-style: normal;
+        font-weight: 400 500;
+        font-display: swap;
+        src: url(https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&display=swap) format('woff2');
+    }
+}
 
 /* ── Reset ─────────────────────────────────────────────────────── */
 *,
@@ -750,6 +772,177 @@ h4.font-display {
     }
 }
 
+.nav-link {
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.5);
+    text-decoration: none;
+    transition: color 0.2s;
+}
+
+.nav-link:hover {
+    color: white;
+}
+
+.hamburger {
+    display: none;
+    flex-direction: column;
+    justify-content: center;
+    gap: 5px;
+    background: none;
+    border: none;
+    cursor: pointer;
+    padding: 4px;
+}
+
+.hamburger span {
+    display: block;
+    width: 22px;
+    height: 2px;
+    background: rgba(255, 255, 255, 0.7);
+    border-radius: 2px;
+    transition: transform 0.25s, opacity 0.25s;
+}
+
+.hamburger.open span:nth-child(1) {
+    transform: translateY(7px) rotate(45deg);
+}
+
+.hamburger.open span:nth-child(2) {
+    opacity: 0;
+}
+
+.hamburger.open span:nth-child(3) {
+    transform: translateY(-7px) rotate(-45deg);
+}
+
+.nav-desktop-links {
+    display: flex;
+    gap: 32px;
+    align-items: center;
+}
+
+.mobile-menu {
+    display: none;
+    position: fixed;
+    top: 64px;
+    left: 0;
+    right: 0;
+    background: rgba(6, 11, 24, 0.97);
+    backdrop-filter: blur(20px);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+    flex-direction: column;
+    padding: 20px 24px 28px;
+    gap: 6px;
+    z-index: 99;
+}
+
+.mobile-menu.open {
+    display: flex;
+}
+
+.mobile-menu .nav-link {
+    font-size: 15px;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+    display: block;
+}
+
+.mobile-cta {
+    background: linear-gradient(135deg, #29B6F6, #0288D1);
+    color: white !important;
+    padding: 11px 20px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 14px;
+    letter-spacing: 0.04em;
+    text-decoration: none;
+    text-align: center;
+    margin-top: 8px;
+    display: block;
+}
+
+@media (max-width: 767px) {
+    .nav-desktop-links {
+        display: none;
+    }
+
+    .hamburger {
+        display: flex;
+    }
+}
 
 
 
+
+/* ─────────────────────────────────────────────────────────────────
+   FOOTER
+───────────────────────────────────────────────────────────────── */
+
+  .about-section {
+      position: relative;
+      z-index: 2;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      padding: 72px 48px;
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      gap: 80;
+      align-items: center;
+      flex-wrap: wrap;
+  }
+
+  .about-left {
+      flex: 1 1 320px;
+  }
+
+  .about-right {
+      flex: 1 1 320px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+  }
+
+  .about-heading {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 44px;
+      color: white;
+      letter-spacing: 0.05em;
+      line-height: 1;
+      margin-bottom: 20px;
+  }
+
+  .footer-inner {
+      position: relative;
+      z-index: 2;
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+      padding: 28px 48px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+  }
+
+  @media (max-width: 767px) {
+      .about-section {
+          padding: 48px 20px;
+          gap: 40px;
+          flex-direction: column;
+      }
+
+      .about-left,
+      .about-right {
+          flex: 1 1 100%;
+      }
+
+      .about-heading {
+          font-size: 36px;
+      }
+
+      .footer-inner {
+          padding: 24px 20px;
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 8px;
+      }
+  }
