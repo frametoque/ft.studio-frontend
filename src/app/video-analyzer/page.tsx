@@ -143,188 +143,193 @@ export default function VideoAnalyzerLanding() {
 
       <NavBar />
 
-      {/* ══ HERO ══ */}
-      <section className="relative z-[2] max-w-[1400px] mx-auto px-12 md:px-6 sm:px-5 grid grid-cols-1 lg:grid-cols-2 min-h-[calc(100vh-64px)] items-center gap-12 lg:gap-8">
+      <main>
 
-        {/* Left — copy */}
-        <div className="py-20 lg:pr-16 lg:sticky lg:top-16">
+        {/* ══ HERO ══ */}
+        <section className="relative z-[2] max-w-[1400px] mx-auto px-12 md:px-6 sm:px-5 grid grid-cols-1 lg:grid-cols-2 min-h-[calc(100vh-64px)] items-center gap-12 lg:gap-8">
 
-          {/* Live label */}
-          <div className={`font-mono text-[11px] text-[#29B6F6] tracking-[0.3em] uppercase mb-6 flex items-center gap-2.5 transition-opacity duration-700 ${mounted ? 'opacity-100' : 'opacity-0'} fade-1`}>
-            <span className="w-[6px] h-[6px] rounded-full bg-[#29B6F6] inline-block flex-shrink-0 animate-pulse" />
-            AI Cinematography Feedback
-          </div>
+          {/* Left — copy */}
+          <div className="py-20 lg:pr-16 lg:sticky lg:top-16">
 
-          {/* Title */}
-          <h1 className={`font-display text-[clamp(44px,7vw,90px)] leading-[0.92] tracking-[0.04em] text-white mb-1.5 ${mounted ? 'fade-2' : 'opacity-0'}`}>
-            KNOW EXACTLY
-          </h1>
-          <h1
-            className={`font-display text-[clamp(44px,7vw,90px)] leading-[0.92] tracking-[0.04em] mb-1.5 ${mounted ? 'fade-3' : 'opacity-0'}`}
-            style={{
-              background: 'linear-gradient(90deg, #29B6F6 0%, #0D47A1 40%, #29B6F6 60%, #0D47A1 100%)',
-              WebkitBackgroundClip: 'text',
-              WebkitTextFillColor: 'transparent',
-              backgroundSize: '200% auto',
-              animation: mounted ? 'shimmer 5s linear 1s infinite' : 'none',
-            }}
-          >
-            WHAT&apos;S WRONG
-          </h1>
-          <h1 className={`font-display text-[clamp(44px,7vw,90px)] leading-[0.92] tracking-[0.04em] text-white mb-7 ${mounted ? 'fade-4' : 'opacity-0'}`}>
-            WITH YOUR SHOT
-          </h1>
-
-          <p className={`text-[15px] md:text-[14px] text-white/40 max-w-[440px] leading-[1.75] font-light mb-9 ${mounted ? 'fade-5' : 'opacity-0'}`}>
-            Upload your footage and get instant ML-powered feedback on
-            exposure, composition, stability, sharpness, contrast, horizon
-            and lighting — plus style detection and engagement prediction.
-          </p>
-
-          {/* CTA — desktop only */}
-          {!isMobile && (
-            <div className={`flex gap-3 mb-12 ${mounted ? 'fade-5' : 'opacity-0'}`}>
-              <Link
-                href="#how"
-                className="bg-transparent border border-white/10 text-white/55 px-7 py-3 rounded-xl font-medium text-[14px] tracking-[0.05em] hover:-translate-y-0.5 hover:border-white/20 hover:text-white/70 transition-all duration-200"
-              >
-                See How It Works ↓
-              </Link>
+            {/* Live label */}
+            <div className={`font-mono text-[11px] text-[#29B6F6] tracking-[0.3em] uppercase mb-6 flex items-center gap-2.5 transition-opacity duration-700 ${mounted ? 'opacity-100' : 'opacity-0'} fade-1`}>
+              <span className="w-[6px] h-[6px] rounded-full bg-[#29B6F6] inline-block flex-shrink-0 animate-pulse" />
+              AI Cinematography Feedback
             </div>
-          )}
 
-          {/* Stats */}
-          <div className={`flex gap-10 sm:gap-6 ${mounted ? 'fade-6' : 'opacity-0'}`}>
-            {stats.map(([v, l]) => (
-              <div key={l}>
-                <div className="font-display text-[30px] sm:text-[26px] text-[#29B6F6] tracking-[0.05em] leading-none">
-                  {v}
-                </div>
-                <div className="text-[11px] text-white/30 tracking-[0.15em] uppercase mt-1">
-                  {l}
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Right — Upload Box */}
-        <div className={`${mounted ? 'fade-4' : 'opacity-0'} pt-20 pb-20 lg:pt-24`}>
-          <UploadBox />
-        </div>
-      </section>
-
-      {/* ══ HOW IT WORKS ══ */}
-      <section id="how" className="relative z-[2] max-w-[1400px] mx-auto px-12 md:px-6 sm:px-5 py-20 border-t border-white/5">
-
-        <div className="mb-12">
-          <p className="font-mono text-[11px] text-[#29B6F6] tracking-[0.3em] uppercase mb-3">
-            The Process
-          </p>
-          <h2 className="font-display text-[clamp(40px,5vw,52px)] text-white tracking-[0.05em]">
-            HOW IT WORKS
-          </h2>
-        </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
-          {steps.map((step, i) => (
-            <div
-              key={step.num}
-              onMouseEnter={() => setHoveredStep(i)}
-              onMouseLeave={() => setHoveredStep(null)}
-              className={`relative overflow-hidden rounded-2xl px-6 py-7 border transition-all duration-300 cursor-default ${
-                hoveredStep === i
-                  ? 'bg-[#29B6F6]/5 border-[#29B6F6]/20'
-                  : 'bg-transparent border-white/5'
-              }`}
+            
+            <h1 className={`font-display text-[clamp(44px,7vw,90px)] leading-[0.92] tracking-[0.04em] text-white mb-1.5 ${mounted ? 'fade-2' : 'opacity-0'}`}>
+              KNOW EXACTLY
+            </h1>
+            <h2
+              className={`font-display text-[clamp(44px,7vw,90px)] leading-[0.92] tracking-[0.04em] mb-1.5 ${mounted ? 'fade-3' : 'opacity-0'}`}
+              style={{
+                background: 'linear-gradient(90deg, #29B6F6 0%, #0D47A1 40%, #29B6F6 60%, #0D47A1 100%)',
+                WebkitBackgroundClip: 'text',
+                WebkitTextFillColor: 'transparent',
+                backgroundSize: '200% auto',
+                animation: mounted ? 'shimmer 5s linear 1s infinite' : 'none',
+              }}
             >
-              <div className="font-display text-[56px] md:text-[44px] text-[#29B6F6]/[0.12] tracking-[0.05em] leading-none mb-3.5">
-                {step.num}
-              </div>
-              <h4 className="font-display text-[22px] text-white tracking-[0.08em] mb-2">
-                {step.title}
-              </h4>
-              <p className="text-[13px] text-white/40 leading-[1.65] font-light">
-                {step.desc}
-              </p>
-            </div>
-          ))}
-        </div>
-      </section>
+              WHAT&apos;S WRONG
+            </h2>
+            <h2 className={`font-display text-[clamp(44px,7vw,90px)] leading-[0.92] tracking-[0.04em] text-white mb-7 ${mounted ? 'fade-4' : 'opacity-0'}`}>
+              WITH YOUR SHOT
+            </h2>
 
-      {/* ══ WHAT WE CHECK ══ */}
-      <section id="checks" className="relative z-[2] max-w-[1400px] mx-auto px-12 md:px-6 sm:px-5 py-20 border-t border-white/5">
-
-        <div className="mb-12">
-          <p className="font-mono text-[11px] text-[#29B6F6] tracking-[0.3em] uppercase mb-3">
-            Under the hood
-          </p>
-          <h2 className="font-display text-[clamp(40px,5vw,52px)] text-white tracking-[0.05em]">
-            7 QUALITY CHECKS
-          </h2>
-        </div>
-
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3.5">
-          {checks.map((check, i) => (
-            <div
-              key={check.name}
-              onMouseEnter={() => setHoveredCheck(i)}
-              onMouseLeave={() => setHoveredCheck(null)}
-              className={`relative overflow-hidden rounded-2xl px-5 py-[22px] border transition-all duration-300 cursor-default ${
-                hoveredCheck === i
-                  ? 'bg-[#29B6F6]/[0.06] border-[#29B6F6]/25'
-                  : 'bg-[#0D1526]/70 border-[#1E3060]/50'
-              }`}
-            >
-              {/* Top glow line on hover */}
-              <div
-                className={`absolute top-0 left-0 right-0 h-px transition-all duration-300 ${hoveredCheck === i ? 'opacity-100' : 'opacity-0'}`}
-                style={{ background: 'linear-gradient(90deg, transparent, #29B6F6, transparent)' }}
-              />
-
-              <div className="mb-3">
-                <check.icon size={26} color="#29B6F6" strokeWidth={1.5} />
-              </div>
-              <h4 className="font-display text-[20px] text-white tracking-[0.08em] mb-2">
-                {check.name}
-              </h4>
-              <p className="text-[12px] text-white/[0.38] leading-[1.65] font-light">
-                {check.desc}
-              </p>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* ══ ML MODELS ══ */}
-      <section className="relative z-[2] max-w-[1400px] mx-auto px-12 md:px-6 sm:px-5 py-20 border-t border-white/5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5">
-        {models.map((m) => (
-          <div
-            key={m.model}
-            className={`rounded-2xl px-6 py-[26px] border ${m.bgClass} ${m.borderClass}`}
-          >
-            <p className={`font-mono text-[10px] tracking-[0.2em] uppercase mb-1.5 ${m.textClass}`}>
-              {m.model}
+            <p className={`text-[15px] md:text-[14px] text-white/60 max-w-[440px] leading-[1.75] font-light mb-9 ${mounted ? 'fade-5' : 'opacity-0'}`}>
+              Upload your footage and get instant ML-powered feedback on
+              exposure, composition, stability, sharpness, contrast, horizon
+              and lighting — plus style detection and engagement prediction.
             </p>
-            <h4 className="font-display text-[22px] text-white tracking-[0.08em] mb-2.5">
-              {m.task}
-            </h4>
-            <p className="text-[13px] text-white/[0.38] leading-[1.65] font-light mb-4">
-              {m.desc}
-            </p>
-            <div className="flex flex-wrap gap-1.5">
-              {m.styles.map((s) => (
-                <span
-                  key={s}
-                  className={`font-mono text-[11px] px-2.5 py-0.5 rounded-md border ${m.tagBgClass} ${m.tagBorderClass} ${m.textClass}`}
+
+            {/* CTA — desktop only */}
+            {!isMobile && (
+              <div className={`flex gap-3 mb-12 ${mounted ? 'fade-5' : 'opacity-0'}`}>
+                <Link
+                  href="#how"
+                  className="bg-transparent border border-white/10 text-white/55 px-7 py-3 rounded-xl font-medium text-[14px] tracking-[0.05em] hover:-translate-y-0.5 hover:border-white/20 hover:text-white/70 transition-all duration-200"
                 >
-                  {s}
-                </span>
+                  See How It Works ↓
+                </Link>
+              </div>
+            )}
+
+            {/* Stats */}
+            <div className={`flex gap-10 sm:gap-6 ${mounted ? 'fade-6' : 'opacity-0'}`}>
+              {stats.map(([v, l]) => (
+                <div key={l}>
+                  <div className="font-display text-[30px] sm:text-[26px] text-[#29B6F6] tracking-[0.05em] leading-none">
+                    {v}
+                  </div>
+                  <div className="text-[11px] text-white/55 tracking-[0.15em] uppercase mt-1">
+                    {l}
+                  </div>
+                </div>
               ))}
             </div>
           </div>
-        ))}
-      </section>
+
+          {/* Right — Upload Box */}
+          
+          <div className={`${mounted ? 'fade-4' : 'opacity-0'} pt-20 pb-20 lg:pt-24`}>
+            <UploadBox inputLabel="Upload video file for analysis" />
+          </div>
+        </section>
+
+        {/* ══ HOW IT WORKS ══ */}
+        <section id="how" className="relative z-[2] max-w-[1400px] mx-auto px-12 md:px-6 sm:px-5 py-20 border-t border-white/5">
+
+          <div className="mb-12">
+            <p className="font-mono text-[11px] text-[#29B6F6] tracking-[0.3em] uppercase mb-3">
+              The Process
+            </p>
+            <h2 className="font-display text-[clamp(40px,5vw,52px)] text-white tracking-[0.05em]">
+              HOW IT WORKS
+            </h2>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5">
+            {steps.map((step, i) => (
+              <div
+                key={step.num}
+                onMouseEnter={() => setHoveredStep(i)}
+                onMouseLeave={() => setHoveredStep(null)}
+                className={`relative overflow-hidden rounded-2xl px-6 py-7 border transition-all duration-300 cursor-default ${
+                  hoveredStep === i
+                    ? 'bg-[#29B6F6]/5 border-[#29B6F6]/20'
+                    : 'bg-transparent border-white/5'
+                }`}
+              >
+                <div className="font-display text-[56px] md:text-[44px] text-[#29B6F6]/[0.12] tracking-[0.05em] leading-none mb-3.5" aria-hidden="true">
+                  {step.num}
+                </div>
+                <h3 className="font-display text-[22px] text-white tracking-[0.08em] mb-2">
+                  {step.title}
+                </h3>
+                <p className="text-[13px] text-white/60 leading-[1.65] font-light">
+                  {step.desc}
+                </p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* ══ WHAT WE CHECK ══ */}
+        <section id="checks" className="relative z-[2] max-w-[1400px] mx-auto px-12 md:px-6 sm:px-5 py-20 border-t border-white/5">
+
+          <div className="mb-12">
+            <p className="font-mono text-[11px] text-[#29B6F6] tracking-[0.3em] uppercase mb-3">
+              Under the hood
+            </p>
+            <h2 className="font-display text-[clamp(40px,5vw,52px)] text-white tracking-[0.05em]">
+              7 QUALITY CHECKS
+            </h2>
+          </div>
+
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-3.5">
+            {checks.map((check, i) => (
+              <div
+                key={check.name}
+                onMouseEnter={() => setHoveredCheck(i)}
+                onMouseLeave={() => setHoveredCheck(null)}
+                className={`relative overflow-hidden rounded-2xl px-5 py-[22px] border transition-all duration-300 cursor-default ${
+                  hoveredCheck === i
+                    ? 'bg-[#29B6F6]/[0.06] border-[#29B6F6]/25'
+                    : 'bg-[#0D1526]/70 border-[#1E3060]/50'
+                }`}
+              >
+                {/* Top glow line on hover */}
+                <div
+                  className={`absolute top-0 left-0 right-0 h-px transition-all duration-300 ${hoveredCheck === i ? 'opacity-100' : 'opacity-0'}`}
+                  style={{ background: 'linear-gradient(90deg, transparent, #29B6F6, transparent)' }}
+                />
+
+                <div className="mb-3">
+                  <check.icon size={26} color="#29B6F6" strokeWidth={1.5} />
+                </div>
+                <h3 className="font-display text-[20px] text-white tracking-[0.08em] mb-2">
+                  {check.name}
+                </h3>
+                <p className="text-[12px] text-white/60 leading-[1.65] font-light">
+                  {check.desc}
+                </p>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* ══ ML MODELS ══ */}
+        <section className="relative z-[2] max-w-[1400px] mx-auto px-12 md:px-6 sm:px-5 py-20 border-t border-white/5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3.5">
+          {models.map((m) => (
+            <div
+              key={m.model}
+              className={`rounded-2xl px-6 py-[26px] border ${m.bgClass} ${m.borderClass}`}
+            >
+              <p className={`font-mono text-[10px] tracking-[0.2em] uppercase mb-1.5 ${m.textClass}`}>
+                {m.model}
+              </p>
+              <h3 className="font-display text-[22px] text-white tracking-[0.08em] mb-2.5">
+                {m.task}
+              </h3>
+              <p className="text-[13px] text-white/60 leading-[1.65] font-light mb-4">
+                {m.desc}
+              </p>
+              <div className="flex flex-wrap gap-1.5">
+                {m.styles.map((s) => (
+                  <span
+                    key={s}
+                    className={`font-mono text-[11px] px-2.5 py-0.5 rounded-md border ${m.tagBgClass} ${m.tagBorderClass} ${m.textClass}`}
+                  >
+                    {s}
+                  </span>
+                ))}
+              </div>
+            </div>
+          ))}
+        </section>
+
+      </main>
 
       <Footer />
     </div>

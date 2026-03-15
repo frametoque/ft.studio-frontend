@@ -24,11 +24,15 @@ interface HistoryItem {
   timestamp: string
 }
 
-export default function UploadBox() {
+interface UploadBoxProps {
+  inputLabel?: string
+}
+
+export default function UploadBox({ inputLabel }: UploadBoxProps) {
   const router = useRouter()
-  const [file, setFile]         = useState<File | null>(null)
+  const [file, setFile]           = useState<File | null>(null)
   const [uploading, setUploading] = useState(false)
-  const [error, setError]       = useState<string | null>(null)
+  const [error, setError]         = useState<string | null>(null)
 
   const onDrop = useCallback((accepted: File[], rejected: FileRejection[]) => {
     setError(null)
@@ -94,7 +98,11 @@ export default function UploadBox() {
             : 'border-[#1E3060]/80 bg-[#0A0F1E]/60 hover:border-[#29B6F6]/40 hover:bg-[#29B6F6]/[0.03]'
           }`}
       >
-        <input {...getInputProps()} />
+       
+        <input
+          {...getInputProps()}
+          aria-label={inputLabel ?? 'Upload video file for analysis'}
+        />
 
         {/* Top radial glow */}
         <div
@@ -126,18 +134,18 @@ export default function UploadBox() {
             <p className="font-display text-[22px] tracking-[0.08em] text-white mb-2">
               DRAG & DROP YOUR VIDEO
             </p>
-            <p className="text-[13px] text-white/35 mb-5 font-light">
+            <p className="text-[13px] text-white/55 mb-5 font-light">
               or click to browse your files
             </p>
             <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-[#1E3060]/80 bg-[#0D1526]/60">
               {['MP4', 'MOV', 'AVI'].map((fmt, i) => (
                 <span key={fmt} className="flex items-center gap-2">
-                  <span className="font-mono text-[11px] text-white/35 tracking-[0.1em]">{fmt}</span>
-                  {i < 2 && <span className="text-white/10 text-[10px]">·</span>}
+                  <span className="font-mono text-[11px] text-white/55 tracking-[0.1em]">{fmt}</span>
+                  {i < 2 && <span className="text-white/10 text-[10px]" aria-hidden="true">·</span>}
                 </span>
               ))}
-              <span className="text-white/10 text-[10px]">·</span>
-              <span className="font-mono text-[11px] text-white/35 tracking-[0.1em]">Max 100MB</span>
+              <span className="text-white/10 text-[10px]" aria-hidden="true">·</span>
+              <span className="font-mono text-[11px] text-white/55 tracking-[0.1em]">Max 100MB</span>
             </div>
           </>
         )}
@@ -154,14 +162,15 @@ export default function UploadBox() {
               <p className="text-[13px] text-white font-medium mb-0.5 max-w-[320px] truncate">
                 {file.name}
               </p>
-              <p className="font-mono text-[11px] text-white/30 tracking-[0.05em]">
+              <p className="font-mono text-[11px] text-white/55 tracking-[0.05em]">
                 {formatSize(file.size)}
               </p>
             </div>
           </div>
           <button
             onClick={(e) => { e.stopPropagation(); setFile(null) }}
-            className="font-mono text-[12px] text-white/25 tracking-[0.1em] px-2 py-1 bg-transparent border-none cursor-pointer hover:text-red-400 transition-colors duration-200"
+            aria-label="Remove selected file"
+            className="font-mono text-[12px] text-white/55 tracking-[0.1em] px-2 py-1 bg-transparent border-none cursor-pointer hover:text-red-400 transition-colors duration-200"
           >
             ✕ REMOVE
           </button>
@@ -170,7 +179,7 @@ export default function UploadBox() {
 
       {/* Error */}
       {error && (
-        <div className="mt-3 bg-red-500/[0.06] border border-red-500/25 rounded-xl px-4 py-3">
+        <div className="mt-3 bg-red-500/[0.06] border border-red-500/25 rounded-xl px-4 py-3" role="alert">
           <p className="font-mono text-[13px] text-red-400 tracking-[0.02em]">⚠ {error}</p>
         </div>
       )}
@@ -187,7 +196,7 @@ export default function UploadBox() {
       >
         {uploading ? (
           <>
-            <div className="w-[18px] h-[18px] rounded-full border-2 border-white/20 border-t-white animate-spin flex-shrink-0" />
+            <div className="w-[18px] h-[18px] rounded-full border-2 border-white/20 border-t-white animate-spin flex-shrink-0" aria-hidden="true" />
             Analyzing your footage...
           </>
         ) : (
@@ -195,8 +204,7 @@ export default function UploadBox() {
         )}
       </button>
 
-      {/* Time note */}
-      <p className="text-center mt-3 font-mono text-[11px] text-white/18 tracking-[0.1em]">
+      <p className="text-center mt-3 font-mono text-[11px] text-white/50 tracking-[0.1em]">
         ANALYSIS TAKES 10–30 SECONDS
       </p>
 
