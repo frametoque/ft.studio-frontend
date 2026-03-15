@@ -2,6 +2,28 @@ import '@/app/globals.css'
 import KeepAlive from '@/components/KeepAlive'
 import { Metadata, Viewport } from 'next'
 import { ReactNode } from 'react'
+import { Bebas_Neue, DM_Sans, DM_Mono } from 'next/font/google'
+
+const bebasNeue = Bebas_Neue({
+  weight: '400',
+  subsets: ['latin'],
+  variable: '--font-display',
+  display: 'block', 
+})
+
+const dmSans = DM_Sans({
+  weight: ['300', '400', '500', '600'],
+  subsets: ['latin'],
+  variable: '--font-sans',
+  display: 'swap',
+})
+
+const dmMono = DM_Mono({
+  weight: ['400', '500'],
+  subsets: ['latin'],
+  variable: '--font-mono',
+  display: 'swap',
+})
 
 export const metadata: Metadata = {
   title: {
@@ -37,7 +59,7 @@ interface RootLayoutProps {
 
 export default function RootLayout({ children }: RootLayoutProps) {
   return (
-    <html lang="en">
+    <html lang="en" className={`${bebasNeue.variable} ${dmSans.variable} ${dmMono.variable}`}>
       <body>
         <div className="bg-grid" />
         <div className="bg-scanline-wrap">
