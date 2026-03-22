@@ -78,7 +78,7 @@ const models: Model[] = [
     model: 'Gradient Boosting',
     task: 'Engagement Prediction',
     desc: 'Predicts viewer engagement level from quality score, style, and shooting characteristics.',
-    styles: ['High 🔥', 'Medium 📈', 'Low ⚠️'],
+    styles: ['High', 'Medium', 'Low'],
     colorClass: 'text-[#66BB6A]',
     borderClass: 'border-[#1E3060]/50',
     bgClass: 'bg-[#0D1526]/70',
