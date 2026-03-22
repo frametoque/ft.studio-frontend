@@ -1,7 +1,5 @@
 @import "tailwindcss";
 
-
-/* ── Base ─────────────────────────────────────────────────────── */
 html {
     scroll-behavior: smooth;
 }
@@ -15,7 +13,6 @@ body {
     -moz-osx-font-smoothing: grayscale;
 }
 
-/* ── Custom keyframes (not in Tailwind) ───────────────────────── */
 @keyframes fadeUp {
     from {
         opacity: 0;
