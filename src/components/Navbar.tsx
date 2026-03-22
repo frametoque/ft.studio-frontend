@@ -1,27 +1,31 @@
-'use client'
+"use client";
 
-import { useState } from 'react'
-import Link from 'next/link'
-import Image from 'next/image'
+import { useState } from "react";
+import Link from "next/link";
+import Image from "next/image";
 
 export default function Navbar() {
-  const [menuOpen, setMenuOpen] = useState<boolean>(false)
+  const [menuOpen, setMenuOpen] = useState<boolean>(false);
 
   const navLinks = [
-    { href: 'https://frametoque.online/services', label: 'Services' },
-    { href: 'https://frametoque.online/about', label: 'About' },
-    { href: 'https://frametoque.online/contact', label: 'Contact' },
-  ]
+    { href: "https://frametoque.online/services", label: "Services" },
+    { href: "https://frametoque.online/about", label: "About" },
+    { href: "https://frametoque.online/contact", label: "Contact" },
+  ];
 
   return (
     <>
       <nav className="fixed top-0 left-0 right-0 z-[100] h-16 px-6 flex items-center justify-between border-b border-white/5 bg-[#060B18]/85 backdrop-blur-xl">
-        
         {/* Logo */}
         <Link href="/" className="flex items-center gap-2 no-underline group">
-          <Image src="/name-logo-trans.png" alt="Frametoque" width={160} height={32} />
+          <Image
+            src="/name-logo-trans.png"
+            alt="Frametoque"
+            width={160}
+            height={32}
+          />
           <span className="font-mono text-[10px] text-[#29B6F6] tracking-[0.2em] bg-[#29B6F6]/10 border border-[#29B6F6]/20 px-[7px] py-[2px] rounded ml-1 whitespace-nowrap">
-            STUDIO
+            AI STUDIO
           </span>
         </Link>
 
@@ -52,14 +56,22 @@ export default function Navbar() {
           aria-label="Toggle menu"
           className="md:hidden flex flex-col justify-center gap-[5px] p-1 bg-transparent border-none cursor-pointer"
         >
-          <span className={`block w-[22px] h-[2px] bg-white/70 rounded-sm transition-all duration-250 ${menuOpen ? 'translate-y-[7px] rotate-45' : ''}`} />
-          <span className={`block w-[22px] h-[2px] bg-white/70 rounded-sm transition-all duration-250 ${menuOpen ? 'opacity-0' : ''}`} />
-          <span className={`block w-[22px] h-[2px] bg-white/70 rounded-sm transition-all duration-250 ${menuOpen ? '-translate-y-[7px] -rotate-45' : ''}`} />
+          <span
+            className={`block w-[22px] h-[2px] bg-white/70 rounded-sm transition-all duration-250 ${menuOpen ? "translate-y-[7px] rotate-45" : ""}`}
+          />
+          <span
+            className={`block w-[22px] h-[2px] bg-white/70 rounded-sm transition-all duration-250 ${menuOpen ? "opacity-0" : ""}`}
+          />
+          <span
+            className={`block w-[22px] h-[2px] bg-white/70 rounded-sm transition-all duration-250 ${menuOpen ? "-translate-y-[7px] -rotate-45" : ""}`}
+          />
         </button>
       </nav>
 
       {/* Mobile menu */}
-      <div className={`md:hidden fixed top-16 left-0 right-0 z-[99] bg-[#060B18]/97 backdrop-blur-xl border-b border-white/5 flex flex-col px-6 gap-1 transition-all duration-300 overflow-hidden ${menuOpen ? 'py-5 pb-7 opacity-100 pointer-events-auto' : 'max-h-0 py-0 opacity-0 pointer-events-none'}`}>
+      <div
+        className={`md:hidden fixed top-16 left-0 right-0 z-[99] bg-[#060B18]/97 backdrop-blur-xl border-b border-white/5 flex flex-col px-6 gap-1 transition-all duration-300 overflow-hidden ${menuOpen ? "py-5 pb-7 opacity-100 pointer-events-auto" : "max-h-0 py-0 opacity-0 pointer-events-none"}`}
+      >
         {navLinks.map((link) => (
           <Link
             key={link.href}
@@ -81,5 +93,5 @@ export default function Navbar() {
         </Link>
       </div>
     </>
-  )
+  );
 }
