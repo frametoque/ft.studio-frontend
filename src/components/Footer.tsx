@@ -43,7 +43,7 @@ export default function Footer() {
                 TOOLS THAT<br />THINK LIKE<br />A FILMMAKER
               </h3>
               <p className="text-[14px] text-white/40 leading-[1.8] font-light max-w-[400px]">
-                FrameToque Studio is a growing collection of AI tools designed around
+                Frametoque Studio is a growing collection of AI tools designed around
                 real filmmaking workflows. No fluff, no generic outputs — every tool is
                 built around how cinematographers actually think.
               </p>

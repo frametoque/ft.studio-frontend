@@ -27,22 +27,22 @@ const dmMono = DM_Mono({
 
 export const metadata: Metadata = {
   title: {
-    default: 'FrameToque Studio',
-    template: '%s | FrameToque Studio',
+    default: 'Frametoque Studio',
+    template: '%s | Frametoque Studio',
   },
   description: 'A growing suite of AI tools built for filmmakers, videographers, and content creators.',
-  metadataBase: new URL('https://studio.frametoque.online'),
+  metadataBase: new URL('https://aistudio.frametoque.online'),
   openGraph: {
-    title: 'FrameToque Studio',
+    title: 'Frametoque Studio',
     description: 'Professional filmmaking tools powered by AI.',
-    url: 'https://studio.frametoque.online',
-    siteName: 'FrameToque Studio',
+    url: 'https://aistudio.frametoque.online',
+    siteName: 'Frametoque Studio',
     locale: 'en_US',
     type: 'website',
   },
   twitter: {
     card: 'summary_large_image',
-    title: 'FrameToque Studio',
+    title: 'Frametoque Studio',
     description: 'Professional filmmaking tools powered by AI.',
   },
 }
